@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Kannon
 {
+    /// <summary>
+    /// IComponentContainers store a multitude of components.
+    /// </summary>
     public interface IComponentContainer
     {
         Dictionary<String, Component> Components
@@ -12,15 +15,38 @@ namespace Kannon
             get;
         }
 
+        /// <summary>
+        /// Add a component to the entity, of type @type, and with name @name
+        /// </summary>
+        /// <param name="type">Type of the component to add, as registered with the component factory.</param>
+        /// <param name="name">The name of the component, default: same as type</param>
+        /// <returns>The newly constructed (and added) component.</returns>
         Component AddComponent(string type, string name = "");
 
+        /// <summary>
+        /// Retrieve an already existing component.
+        /// </summary>
+        /// <param name="name">Name of the component</param>
+        /// <returns>Either the registered component, or null.</returns>
         Component GetComponent(string name);
 
+        /// <summary>
+        /// Determines whether this entity has a component of @name.
+        /// </summary>
+        /// <param name="name">Name of the component</param>
+        /// <returns>True or False, depending on if the component is registered with this entity.</returns>
         bool HasComponent(string name);
 
+        /// <summary>
+        /// Remove a component from this entity.
+        /// </summary>
+        /// <param name="name">Name of the component to remove.</param>
         void RemoveComponent(string name);
     }
 
+    /// <summary>
+    /// A component.  Something an entity Is or Can Do.
+    /// </summary>
     public class Component
     {
     }

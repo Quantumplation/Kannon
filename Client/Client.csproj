@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ComponentFactory.cs" />
     <Compile Include="Entity Framework\Component.cs" />
+    <Compile Include="Entity Framework\ComponentFactory.cs" />
     <Compile Include="Entity Framework\Entity.cs" />
     <Compile Include="Entity Framework\Event.cs" />
     <Compile Include="Entry.cs" />
