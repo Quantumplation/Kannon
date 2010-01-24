@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Kannon.Property&lt;T&gt;">
+    <Position X="5.75" Y="6.75" Width="1.5" />
+    <Members>
+      <Field Name="m_Internal" Hidden="true" />
+      <Method Name="Property" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAQAgAAAAAAA=</HashCode>
+      <FileName>Entity Framework\Property.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kannon.Component" Collapsed="true">
+    <Position X="2.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity Framework\Component.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kannon.Entity" Collapsed="true">
+    <Position X="4" Y="2" Width="1.5" />
+    <Members>
+      <Property Name="Components" Hidden="true" />
+      <Property Name="Events" Hidden="true" />
+      <Property Name="Properties" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>kAAAAAFAAABIBoBAAAAABAAAAgCAACAcACAAAAACCAQ=</HashCode>
+      <FileName>Entity Framework\Entity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kannon.ComponentFactory">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAGAAAAAAAAAAAAA=</HashCode>
+      <FileName>ComponentFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Kannon.IComponentContainer">
+    <Position X="2.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAIAAAAAABAAAAAAAAAAEACAAAAAAAAA=</HashCode>
+      <FileName>Entity Framework\Component.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Components" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="Kannon.IPropertyContainer">
+    <Position X="5.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kAAAAAAAAABABgAAAAAAAAAAAAAAACAYAAAAAAACAAA=</HashCode>
+      <FileName>Entity Framework\Property.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Properties" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="Kannon.IProperty" Collapsed="true">
+    <Position X="5.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Entity Framework\Property.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kannon.IEventContainer">
+    <Position X="4" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAABAAAAAAgBAAAAAAAAAAgAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Entity Framework\Event.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Events" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Delegate Name="Kannon.EntityEvent" Collapsed="true">
+    <Position X="4" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity Framework\Event.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Kannon.ValueChanged&lt;T&gt;" Collapsed="true">
+    <Position X="7.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity Framework\Property.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Kannon.ComponentCreation">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ComponentFactory.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

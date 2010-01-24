@@ -8,7 +8,7 @@
     <ProjectGuid>{50C6C179-20FB-44FB-BAB5-9678BBCE93CD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Client</RootNamespace>
+    <RootNamespace>Kannon</RootNamespace>
     <AssemblyName>Client</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -33,7 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ComponentFactory.cs" />
+    <Compile Include="Entity Framework\Component.cs" />
+    <Compile Include="Entity Framework\Entity.cs" />
+    <Compile Include="Entity Framework\Event.cs" />
     <Compile Include="Entry.cs" />
+    <Compile Include="Entity Framework\Property.cs" />
     <Compile Include="XNA.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -45,10 +50,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Content\ERROR.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
