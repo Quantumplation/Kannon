@@ -47,7 +47,33 @@ namespace Kannon
     /// <summary>
     /// A component.  Something an entity Is or Can Do.
     /// </summary>
-    public class Component
+    public abstract class Component
     {
+        /// <summary>
+        /// Entity assosciated with this Component.
+        /// </summary>
+        public Entity Entity
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Name of this component.
+        /// </summary>
+        public String Name
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Component(Entity ent, String name)
+        {
+            Entity = ent;
+            Name = name;
+        }
     }
 }

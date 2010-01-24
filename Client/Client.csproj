@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Broadphases\IBroadphase.cs" />
     <Compile Include="Entity Framework\Component.cs" />
     <Compile Include="Entity Framework\ComponentFactory.cs" />
     <Compile Include="Entity Framework\Entity.cs" />
@@ -48,6 +49,7 @@
     <Reference Include="Microsoft.Xna.Framework.Game, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
       <SpecificVersion>True</SpecificVersion>
     </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
