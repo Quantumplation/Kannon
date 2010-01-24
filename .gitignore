@@ -1,3 +1,6 @@
 obj/
 bin/
 *.suo
+*.csproj.user
+*.contentproj.user
+*.csproj.Debug.cachefile
