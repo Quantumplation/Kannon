@@ -30,11 +30,23 @@ namespace Kannon
             set { spriteBatch = value; }
         }
 
-        private static XNAGame instance;
+        /// <summary>
+        /// Broadphases for the Kannon Game.
+        /// </summary>
+        Dictionary<String, IBroadphase> m_Broadphases;
+        public Dictionary<String, IBroadphase> Broadphases
+        {
+            get
+            {
+                return m_Broadphases;
+            }
+        }
+
         /// <summary>
         /// Returns the Instance of this Singleton.
         /// </summary>
         /// <seealso cref="Singleton<T>"/>
+        private static XNAGame instance;
         public static XNAGame Instance
         {
             get
@@ -64,7 +76,11 @@ namespace Kannon
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize()
-        { 
+        {
+            m_Broadphases = new Dictionary<string, IBroadphase>();
+            m_Broadphases.Add("Generic", new Broadphases.Generic());
+            m_Broadphases.Add("Graphics", new Broadphases.Graphics());
+
             base.Initialize();
         }
 

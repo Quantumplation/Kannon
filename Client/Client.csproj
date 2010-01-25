@@ -33,9 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Broadphases\Generic.cs" />
+    <Compile Include="Broadphases\Graphics.cs" />
     <Compile Include="Broadphases\IBroadphase.cs" />
     <Compile Include="Entity Framework\Component.cs" />
     <Compile Include="Entity Framework\ComponentFactory.cs" />
+    <Compile Include="Entity Framework\Components\IGenericComponent.cs" />
+    <Compile Include="Entity Framework\Components\IRenderableComponent.cs" />
     <Compile Include="Entity Framework\Entity.cs" />
     <Compile Include="Entity Framework\Event.cs" />
     <Compile Include="Entry.cs" />
