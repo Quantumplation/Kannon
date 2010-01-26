@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework;
+
 namespace Kannon.Broadphases
 {
+    /// <summary>
+    /// Provides an Update(gameTime) heartbeat to components that implement IGeneric.
+    /// </summary>
     public class Generic : IBroadphase
     {
         public Generic()
@@ -15,11 +20,21 @@ namespace Kannon.Broadphases
         public void RegisterComponent(Component c)
         {
             m_Components.Add(c as Components.IGenericComponent);
+            c.Entity.AddEvent(c.Name + ".Remove", new EntityEvent(this.RemoveComponent));
+        }
+
+        public void RemoveComponent(Object c)
+        {
+            RemoveComponent(c as Component);
         }
 
         public void RemoveComponent(Component c)
         {
             m_Components.Remove(c as Components.IGenericComponent);
+        }
+
+        public void Initialize()
+        {
         }
 
         private float internalTimer;

@@ -147,10 +147,11 @@ namespace Kannon
         /// Cause the eent to be invoked, triggering all registered callbacks.
         /// </summary>
         /// <param name="name">Name of the event to invoke.</param>
-        public void InvokeEvent(String name)
+        /// <param name="data">Data to pass to the event.</param>
+        public void InvokeEvent(String name, Object data)
         {
             if (m_Events.ContainsKey(name))
-                m_Events[name]();
+                m_Events[name](data);
         }
 
         /// <summary>

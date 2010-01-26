@@ -40,6 +40,7 @@
     <Compile Include="Entity Framework\ComponentFactory.cs" />
     <Compile Include="Entity Framework\Components\IGenericComponent.cs" />
     <Compile Include="Entity Framework\Components\IRenderableComponent.cs" />
+    <Compile Include="Entity Framework\Components\StaticRenderable.cs" />
     <Compile Include="Entity Framework\Entity.cs" />
     <Compile Include="Entity Framework\Event.cs" />
     <Compile Include="Entry.cs" />

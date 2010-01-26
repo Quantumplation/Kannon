@@ -70,6 +70,36 @@ namespace Kannon
         }
 
         /// <summary>
+        /// Invoked once all broadphases have been created.
+        /// </summary>
+        public event Action InitializeEvent;
+
+        /// <summary>
+        /// Invoked when content should be loaded.
+        /// </summary>
+        public event Action LoadEvent;
+
+        /// <summary>
+        /// Invoked when things should be updated.
+        /// </summary>
+        public event Action<float> UpdateEvent;
+
+        /// <summary>
+        /// Invoked when the game should render.
+        /// </summary>
+        public event Action<float> RenderEvent;
+
+        /// <summary>
+        /// Invoked when content should be loaded.
+        /// </summary>
+        public event Action UnloadEvent;
+
+        /// <summary>
+        /// Invoked when the game is exiting.
+        /// </summary>
+        public event Action DestroyEvent;
+
+        /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
         /// related content.  Calling base.Initialize will enumerate through any components
@@ -77,9 +107,17 @@ namespace Kannon
         /// </summary>
         protected override void Initialize()
         {
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.StaticRenderable));
+
             m_Broadphases = new Dictionary<string, IBroadphase>();
             m_Broadphases.Add("Generic", new Broadphases.Generic());
-            m_Broadphases.Add("Graphics", new Broadphases.Graphics());
+            m_Broadphases.Add("Graphics", new Broadphases.Graphics(this.Content, this.GraphicsDevice));
+
+            Entity ent = new Entity();
+            ent.AddComponent("StaticRenderable");
+
+            if( InitializeEvent != null )
+                InitializeEvent();
 
             base.Initialize();
         }
@@ -90,6 +128,8 @@ namespace Kannon
         /// </summary>
         protected override void LoadContent()
         {
+            if( LoadEvent != null )
+                LoadEvent();
         }
 
         /// <summary>
@@ -98,6 +138,8 @@ namespace Kannon
         /// </summary>
         protected override void UnloadContent()
         {
+            if (UnloadEvent != null)
+                UnloadEvent();
         }
 
         /// <summary>
@@ -107,7 +149,20 @@ namespace Kannon
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if( UpdateEvent != null )
+                UpdateEvent((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             base.Update(gameTime);
+        }
+
+
+        /// <summary>
+        /// Called when the game is on the verge of exiting.
+        /// </summary>
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            if( DestroyEvent != null )
+                DestroyEvent();
+            base.OnExiting(sender, args);
         }
 
         /// <summary>
@@ -117,6 +172,8 @@ namespace Kannon
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            if (RenderEvent != null)
+                RenderEvent((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             base.Draw(gameTime);
         }
     }

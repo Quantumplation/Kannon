@@ -19,11 +19,14 @@ namespace Kannon
     /// <param name="c"></param>
     public delegate void ComponentCreated(Component c);
 
-    /// <summary>
-    /// Component Creator attribute for the automatic extraction of "Creation" methods.
-    /// </summary>
-    public class ComponentCreator : Attribute
-    {}
+    namespace Components
+    {
+        /// <summary>
+        /// Component Creator attribute for the automatic extraction of "Creation" methods.
+        /// </summary>
+        public class ComponentCreator : Attribute
+        { }
+    }
 
     public static class ComponentFactory
     {
@@ -55,7 +58,7 @@ namespace Kannon
             {
                 Component c = m_FactoryMethods[type](ent, name);
                 foreach (Type t in m_CreationCallbacks.Keys)
-                    if (c.GetType().IsSubclassOf(t))
+                    if (c.GetType().GetInterface(t.Name) != null)
                         m_CreationCallbacks[t](c);
             }
             return null;
@@ -103,10 +106,10 @@ namespace Kannon
                     if (m.IsStatic)
                         // And have a component creator attribute.
                         foreach (object o in m.GetCustomAttributes(false))
-                            if (o is ComponentCreator)
+                            if (o is Components.ComponentCreator)
                             {
                                 // So, register it, and return.
-                                RegisterComponentType(component.Name, Delegate.CreateDelegate(component, m) as ComponentCreation);
+                                RegisterComponentType(component.Name, Delegate.CreateDelegate(typeof(ComponentCreation), m) as ComponentCreation);
                                 return;
                             }
                 }

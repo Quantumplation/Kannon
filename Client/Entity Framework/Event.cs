@@ -45,7 +45,8 @@ namespace Kannon
         /// Cause the eent to be invoked, triggering all registered callbacks.
         /// </summary>
         /// <param name="name">Name of the event to invoke.</param>
-        void InvokeEvent(String name);
+        /// <param name="data">Data to pass to the event.</param>
+        void InvokeEvent(String name, object data);
 
         /// <summary>
         /// Remove an event from this entity.
@@ -57,5 +58,6 @@ namespace Kannon
     /// <summary>
     /// An event registered with an IEventContainer.  This is something that Can Happen.
     /// </summary>
-    public delegate void EntityEvent();
+    /// <param name="Data">Data passed along with the event.</param>
+    public delegate void EntityEvent(object Data);
 }
