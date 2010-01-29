@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Xml;
+
 namespace Kannon
 {
     /// <summary>
@@ -75,5 +77,7 @@ namespace Kannon
             Entity = ent;
             Name = name;
         }
+
+        public abstract void Parse(XmlNode data);
     }
 }

@@ -113,8 +113,14 @@ namespace Kannon
             m_Broadphases.Add("Generic", new Broadphases.Generic());
             m_Broadphases.Add("Graphics", new Broadphases.Graphics(this.Content, this.GraphicsDevice));
 
-            Entity ent = new Entity();
+            /*Entity ent = new Entity();
+            ent.AddProperty<float>("Scale", .5f);
+            ent.AddProperty<float>("Rotation", (float)Math.PI / 6);
+            ent.AddProperty<Vector2>("Origin", new Vector2(16, 16));
+            ent.AddProperty<Vector2>("Position", new Vector2(200, 200));
             ent.AddComponent("StaticRenderable");
+            */
+            System.Collections.Generic.List<Entity> set = EntityFactory.ProduceSet("TestSetA");
 
             if( InitializeEvent != null )
                 InitializeEvent();

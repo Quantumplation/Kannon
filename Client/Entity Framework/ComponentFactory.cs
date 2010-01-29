@@ -60,6 +60,7 @@ namespace Kannon
                 foreach (Type t in m_CreationCallbacks.Keys)
                     if (c.GetType().GetInterface(t.Name) != null)
                         m_CreationCallbacks[t](c);
+                return c;
             }
             return null;
         }

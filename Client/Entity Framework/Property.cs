@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
+
 namespace Kannon
 {
 
@@ -83,10 +87,19 @@ namespace Kannon
     /// </summary>
     public interface IProperty
     {
+        /// <summary>
+        /// Type the property is wrapping.
+        /// </summary>
         Type Type
         {
             get;
         }
+
+        /// <summary>
+        /// Parse an XML node to extract data out of it.
+        /// </summary>
+        /// <param name="data">Data to construct from.</param>
+        void Parse(XmlNode data);
     }
 
     /// <summary>
@@ -112,6 +125,14 @@ namespace Kannon
         public Property(T value)
         {
             m_Internal = value;
+        }
+
+        /// <summary>
+        /// Parameterless Constructor
+        /// </summary>
+        public Property()
+        {
+            m_Internal = default(T);
         }
         
         /// <summary>
@@ -145,6 +166,16 @@ namespace Kannon
                     ValueChanged(m_Internal, value);
                 m_Internal = value;
             }
+        }
+
+        public void Parse(XmlNode data)
+        {
+            XmlSerializer ser = new XmlSerializer(typeof(T));
+            //XmlWriter writ = XmlWriter.Create("TestInt.xml");
+            //ser.Serialize(writ, new Microsoft.Xna.Framework.Vector2(1.0f, 1.0f));
+            object obj = ser.Deserialize(new XmlNodeReader(data));
+            if (obj is T)
+                m_Internal = (T)obj;
         }
     }
 }

@@ -42,6 +42,7 @@
     <Compile Include="Entity Framework\Components\IRenderableComponent.cs" />
     <Compile Include="Entity Framework\Components\StaticRenderable.cs" />
     <Compile Include="Entity Framework\Entity.cs" />
+    <Compile Include="Entity Framework\EntityFactory.cs" />
     <Compile Include="Entity Framework\Event.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="Entity Framework\Property.cs" />
@@ -55,14 +56,23 @@
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ClassDiagram1.cd" />
     <None Include="Content\ERROR.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Test.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
