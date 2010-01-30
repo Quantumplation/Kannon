@@ -10,7 +10,16 @@ namespace Kannon.Components
 {
     public interface IRenderableComponent
     {
-        void Load(ContentManager cm, SpriteBatch sb);
-        void Render();
+        Int32 Layer
+        {
+            get;
+            set;
+        }
+        void Render(SpriteBatch sb);
+    }
+
+    public interface IContentComponent
+    {
+        void Load(ContentManager cm);
     }
 }

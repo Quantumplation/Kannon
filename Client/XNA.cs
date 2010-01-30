@@ -16,6 +16,8 @@ namespace Kannon
 {
     public class XNAGame : Microsoft.Xna.Framework.Game
     {
+        Entity ent;
+
         GraphicsDeviceManager graphics;
         public GraphicsDeviceManager Graphics
         {
@@ -23,18 +25,11 @@ namespace Kannon
             set { graphics = value; }
         }
 
-        SpriteBatch spriteBatch;
-        public SpriteBatch SpriteBatch
-        {
-            get { return spriteBatch; }
-            set { spriteBatch = value; }
-        }
-
         /// <summary>
         /// Broadphases for the Kannon Game.
         /// </summary>
         Dictionary<String, IBroadphase> m_Broadphases;
-        public Dictionary<String, IBroadphase> Broadphases
+        public Dictionary<String, IBroadphase> CurrentBroadphases
         {
             get
             {
@@ -55,6 +50,11 @@ namespace Kannon
                 // Therefore, this returns either instance, or, if instance is null, returns new T();
                 return instance ?? (instance = new XNAGame());
             }
+        }
+
+        public T GetBroadphase<T>(String name) where T: class, IBroadphase
+        {
+            return m_Broadphases[name] as T;
         }
 
         public XNAGame()
@@ -108,10 +108,13 @@ namespace Kannon
         protected override void Initialize()
         {
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.StaticRenderable));
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Sound));
 
             m_Broadphases = new Dictionary<string, IBroadphase>();
             m_Broadphases.Add("Generic", new Broadphases.Generic());
-            m_Broadphases.Add("Graphics", new Broadphases.Graphics(this.Content, this.GraphicsDevice));
+            m_Broadphases.Add("Graphics", new Broadphases.Graphics(this.GraphicsDevice));
+            m_Broadphases.Add("Content", new Broadphases.Content(this.Content));
+            m_Broadphases.Add("Input", new Broadphases.Input());
 
             /*Entity ent = new Entity();
             ent.AddProperty<float>("Scale", .5f);
@@ -121,7 +124,7 @@ namespace Kannon
             ent.AddComponent("StaticRenderable");
             */
             System.Collections.Generic.List<Entity> set = EntityFactory.ProduceSet("TestSetA");
-
+            ent = set[0];
             if( InitializeEvent != null )
                 InitializeEvent();
 
@@ -153,8 +156,30 @@ namespace Kannon
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        bool flagPlaying = false;
+        bool flagPressed = false;
         protected override void Update(GameTime gameTime)
         {
+            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.Space))
+            {
+                if (!flagPressed)
+                {
+                    flagPressed = true;
+                    if (!flagPlaying)
+                    {
+                        ent.InvokeEvent("Play", null);
+                        flagPlaying = true;
+                    }
+                    else
+                    {
+                        ent.InvokeEvent("Pause", null);
+                        flagPlaying = false;
+                    }
+                }
+            }
+            else
+                flagPressed = false;
+
             if( UpdateEvent != null )
                 UpdateEvent((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             base.Update(gameTime);

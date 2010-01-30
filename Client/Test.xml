@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Project>
   <Set name="TestSetA">
-    <Entity base="EntityA">
-    </Entity>
+    <Entity base="EntityA"/>
     <Entity base="EntityA">
       <Property name="Position" mod="Modify">
         <Vector2>
@@ -19,7 +18,12 @@
         <Y>100</Y>
       </Vector2>
     </Property>
-    <Component type="StaticRenderable" name="ComponentA">
+    <Component type="StaticRenderable" name="ComponentA"/>
+    <Component type="Sound" name="Sound">
+      <Sound file="StillAlive">
+        <Event event="Play" action="Play"/>
+        <Event event="Pause" action="Pause"/>
+      </Sound>
     </Component>
   </Entity>
 </Project>

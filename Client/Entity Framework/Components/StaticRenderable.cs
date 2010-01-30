@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Kannon.Components
 {
-    class StaticRenderable : Component, IRenderableComponent
+    class StaticRenderable : Component, IRenderableComponent, IContentComponent
     {
         [ComponentCreator]
         public static Component Create(Entity ent, String name)
@@ -16,41 +16,47 @@ namespace Kannon.Components
             return new StaticRenderable(ent, name);
         }
 
-        Property<String> m_Filename;
         Property<Vector2> m_Position;
         Property<Vector2> m_Origin;
         Property<float> m_Rotation;
         Property<float> m_Scale;
-        SpriteBatch m_SpriteBatch;
+        String m_Filename;
         Texture2D m_Texture;
 
         public bool Otherd = false;
 
         public StaticRenderable(Entity ent, String name) : base(ent, name)
         {
-            m_Filename = Entity.AddProperty<String>("Graphics.Filename", "ERROR");
             m_Position = Entity.AddProperty<Vector2>("Position", Vector2.Zero);
             m_Origin = Entity.AddProperty<Vector2>("Origin", Vector2.Zero);
             m_Rotation = Entity.AddProperty<float>("Rotation", 0.0f);
             m_Scale = Entity.AddProperty<float>("Scale", 1.0f);
         }
 
-        public void Load(Microsoft.Xna.Framework.Content.ContentManager cm, SpriteBatch sb)
+        public void Load(Microsoft.Xna.Framework.Content.ContentManager cm)
         {
-            m_SpriteBatch = sb;
-            m_Texture = cm.Load<Texture2D>(m_Filename.Value);
+            m_Texture = cm.Load<Texture2D>(m_Filename);
         }
 
-        public void Render()
+        public void Render(SpriteBatch sb)
         {
-            m_SpriteBatch.Draw(m_Texture, m_Position.Value, null, Color.White, m_Rotation.Value, m_Origin.Value, m_Scale.Value, SpriteEffects.None, 0.0f);
+            sb.Draw(m_Texture, m_Position.Value, null, Color.White, m_Rotation.Value, m_Origin.Value, m_Scale.Value, SpriteEffects.None, 0.0f);
         }
 
         public override void Parse(System.Xml.XmlNode data)
         {
-            if (data.HasChildNodes)
-                if (data.FirstChild.Name == "Other")
-                    Otherd = true;
+            if (data.Attributes["layer"] != null)
+                Layer = Int32.Parse(data.Attributes["layer"].Value);
+            if (data.Attributes["file"] != null)
+                m_Filename = data.Attributes["file"].Value;
+            else
+                m_Filename = "ERROR";
+        }
+
+        public Int32 Layer
+        {
+            get;
+            set;
         }
     }
 }

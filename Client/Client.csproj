@@ -33,19 +33,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Broadphases\Content.cs" />
     <Compile Include="Broadphases\Generic.cs" />
     <Compile Include="Broadphases\Graphics.cs" />
     <Compile Include="Broadphases\IBroadphase.cs" />
+    <Compile Include="Broadphases\Input.cs" />
     <Compile Include="Entity Framework\Component.cs" />
     <Compile Include="Entity Framework\ComponentFactory.cs" />
     <Compile Include="Entity Framework\Components\IGenericComponent.cs" />
-    <Compile Include="Entity Framework\Components\IRenderableComponent.cs" />
+    <Compile Include="Entity Framework\Components\ContentComponents.cs" />
+    <Compile Include="Entity Framework\Components\Sound.cs" />
     <Compile Include="Entity Framework\Components\StaticRenderable.cs" />
     <Compile Include="Entity Framework\Entity.cs" />
     <Compile Include="Entity Framework\EntityFactory.cs" />
     <Compile Include="Entity Framework\Event.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="Entity Framework\Property.cs" />
+    <Compile Include="Misc\ITransformer.cs" />
     <Compile Include="XNA.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,7 +67,61 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagram1.cd" />
+    <None Include="Content\BlameYou.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\could-you-come-over.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\hello-friend.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\hey-hey-hey.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\i-don-t-blame-you.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\i-don-t-hate-you.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\i-see-you.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\it-s-me.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\no-hard-feelings.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\sorry-we-re-closed.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\still-there.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\StillAlive.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\ERROR.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Gotcha.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Product.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\there-you-are.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\there-you-are2.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Why.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Wooo.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

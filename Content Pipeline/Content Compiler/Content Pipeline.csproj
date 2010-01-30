@@ -138,7 +138,9 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>copy c:\Programming\Kannon\Client\Content\Uncompiled\* "c:\Programming\Kannon\Content Pipeline\Content Compiler\Content"</PreBuildEvent>
-    <PostBuildEvent>copy "c:\Programming\Kannon\Content Pipeline\Content Compiler\bin\x86\Debug\Content\*" c:\Programming\Kannon\Client\Content</PostBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

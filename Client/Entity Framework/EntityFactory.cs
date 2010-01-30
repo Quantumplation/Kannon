@@ -472,8 +472,7 @@ namespace Kannon
                                             "" : 
                                             node.Attributes["name"].Value;
                         Component c = ent.AddComponent(compType, compName);
-                        if (node.HasChildNodes)
-                            c.Parse(node);
+                        c.Parse(node);
                     }
                 }
                 return ent;

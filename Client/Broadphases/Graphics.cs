@@ -13,41 +13,35 @@ namespace Kannon.Broadphases
     /// </summary>
     public class Graphics :IBroadphase
     {
-        private ContentManager m_ContentManager;
         private SpriteBatch m_SpriteBatch;
+        SortedDictionary<Int32, List<Components.IRenderableComponent>> m_Components;
+        Dictionary<Int32, ITransformer> m_Transformers;
 
-        public Graphics(ContentManager cm, GraphicsDevice gd)
+        public Graphics(GraphicsDevice gd)
         {
-            m_Components = new List<Kannon.Components.IRenderableComponent>();
+            m_Components = new SortedDictionary<int, List<Components.IRenderableComponent>>();
+            m_Transformers = new Dictionary<int, ITransformer>();
 
             ComponentFactory.RegisterCreatedCallback<Components.IRenderableComponent>(this.RegisterComponent);
-            m_ContentManager = cm;
             m_SpriteBatch = new SpriteBatch(gd);
 
-            XNAGame.Instance.LoadEvent += Load;
             XNAGame.Instance.RenderEvent += Do;
         }
 
         public void RegisterComponent(Component c)
         {
-            if (Loaded)
-                (c as Components.IRenderableComponent).Load(m_ContentManager, m_SpriteBatch);
-            m_Components.Add(c as Components.IRenderableComponent);
+            Components.IRenderableComponent r = c as Components.IRenderableComponent;
+            if (!m_Components.ContainsKey(r.Layer))
+            {
+                m_Components.Add(r.Layer, new List<Components.IRenderableComponent>());
+                m_Transformers.Add(r.Layer, IDTransformer.Identity);
+            }
+            m_Components[r.Layer].Add(r);
         }
 
         public void RemoveComponent(Component c)
         {
-            m_Components.Remove(c as Components.IRenderableComponent);
-        }
-
-        private bool Loaded = false;
-        public void Load()
-        {
-            Loaded = true;
-            foreach (Components.IRenderableComponent c in m_Components)
-            {
-                c.Load(m_ContentManager, m_SpriteBatch);
-            }
+            m_Components.Remove((c as Components.IRenderableComponent).Layer);
         }
 
         private float internalTimer;
@@ -67,13 +61,17 @@ namespace Kannon.Broadphases
 
         protected void Render()
         {
-            m_SpriteBatch.Begin();
-            foreach (Components.IRenderableComponent renderable in m_Components)
-                renderable.Render();
-            m_SpriteBatch.End();
+            foreach (Int32 layer in m_Components.Keys)
+            {
+                m_SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.None, m_Transformers[layer].GetTransformation(layer)); ;
+
+                foreach (Components.IRenderableComponent renderable in m_Components[layer])
+                    renderable.Render(m_SpriteBatch);
+
+                m_SpriteBatch.End();
+            }
         }
 
-        List<Components.IRenderableComponent> m_Components;
 
         public float ExecutionFrequency
         {
