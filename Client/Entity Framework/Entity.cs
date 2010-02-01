@@ -196,7 +196,7 @@ namespace Kannon
                 throw new Exception("Property exists, but is of a different type.");
             }
             Property<T> property = new Property<T>(defaultValue);
-            m_Properties.Add(name, new Property<T>(defaultValue));
+            m_Properties.Add(name, property);
             return property;
         }
         /// <summary>

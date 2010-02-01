@@ -13,14 +13,22 @@ namespace Kannon.Broadphases
     /// </summary>
     public class Graphics :IBroadphase
     {
+        class ReverseCompararer : IComparer<Int32>
+        {
+            public int Compare(int x, int y)
+            {
+                return y.CompareTo(x);
+            }
+        }
+
         private SpriteBatch m_SpriteBatch;
         SortedDictionary<Int32, List<Components.IRenderableComponent>> m_Components;
-        Dictionary<Int32, ITransformer> m_Transformers;
+        ITransformer[] m_Transformers;
 
         public Graphics(GraphicsDevice gd)
         {
-            m_Components = new SortedDictionary<int, List<Components.IRenderableComponent>>();
-            m_Transformers = new Dictionary<int, ITransformer>();
+            m_Components = new SortedDictionary<int, List<Components.IRenderableComponent>>(new ReverseCompararer());
+            m_Transformers = new ITransformer[100];
 
             ComponentFactory.RegisterCreatedCallback<Components.IRenderableComponent>(this.RegisterComponent);
             m_SpriteBatch = new SpriteBatch(gd);
@@ -34,7 +42,6 @@ namespace Kannon.Broadphases
             if (!m_Components.ContainsKey(r.Layer))
             {
                 m_Components.Add(r.Layer, new List<Components.IRenderableComponent>());
-                m_Transformers.Add(r.Layer, IDTransformer.Identity);
             }
             m_Components[r.Layer].Add(r);
         }
@@ -42,6 +49,33 @@ namespace Kannon.Broadphases
         public void RemoveComponent(Component c)
         {
             m_Components.Remove((c as Components.IRenderableComponent).Layer);
+        }
+
+        public void SetTransformer(ITransformer trans, Int32 layerStart, Int32? layerEnd = null )
+        {
+            if (layerEnd > 100 || layerStart < 0)
+                throw new Exception("Layer must be between 0 and 100");
+            if (layerEnd == null)
+                layerEnd = layerStart;
+            for (int x = layerStart; x < layerEnd; x++)
+            {
+                m_Transformers[x] = trans;
+            }
+        }
+
+        public void ChangeLayer(Components.IRenderableComponent comp, Int32 oldLayer, Int32 newLayer)
+        {
+            if (m_Components.ContainsKey(oldLayer))
+                if (m_Components[oldLayer].Contains(comp))
+                {
+                    m_Components[oldLayer].Remove(comp);
+                    if (!m_Components.ContainsKey(newLayer))
+                    {
+                        m_Components.Add(newLayer, new List<Components.IRenderableComponent>());
+                    }
+                    m_Components[newLayer].Add(comp);
+                }
+
         }
 
         private float internalTimer;
@@ -61,17 +95,20 @@ namespace Kannon.Broadphases
 
         protected void Render()
         {
-            foreach (Int32 layer in m_Components.Keys)
+            foreach (var x in m_Components)
             {
-                m_SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.None, m_Transformers[layer].GetTransformation(layer)); ;
+                Int32 layer = x.Key;
+                if (m_Components[layer].Count > 0)
+                {
+                    m_SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.None, (m_Transformers[layer] ?? IDTransformer.Identity).GetTransformation(layer)); ;
 
-                foreach (Components.IRenderableComponent renderable in m_Components[layer])
-                    renderable.Render(m_SpriteBatch);
+                    foreach (Components.IRenderableComponent renderable in x.Value)
+                        renderable.Render(m_SpriteBatch);
 
-                m_SpriteBatch.End();
+                    m_SpriteBatch.End();
+                }
             }
         }
-
 
         public float ExecutionFrequency
         {

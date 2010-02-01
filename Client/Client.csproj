@@ -10,10 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kannon</RootNamespace>
     <AssemblyName>Client</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PlatformTarget>x86</PlatformTarget>
     <StartupObject>Kannon.Entry</StartupObject>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +41,7 @@
     <Compile Include="Broadphases\Input.cs" />
     <Compile Include="Entity Framework\Component.cs" />
     <Compile Include="Entity Framework\ComponentFactory.cs" />
+    <Compile Include="Entity Framework\Components\Camera.cs" />
     <Compile Include="Entity Framework\Components\IGenericComponent.cs" />
     <Compile Include="Entity Framework\Components\ContentComponents.cs" />
     <Compile Include="Entity Framework\Components\Sound.cs" />
@@ -47,6 +49,7 @@
     <Compile Include="Entity Framework\Entity.cs" />
     <Compile Include="Entity Framework\EntityFactory.cs" />
     <Compile Include="Entity Framework\Event.cs" />
+    <Compile Include="Entity Framework\GlobalProperties.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="Entity Framework\Property.cs" />
     <Compile Include="Misc\ITransformer.cs" />
@@ -69,6 +72,9 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="Content\BlameYou.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Camera.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\could-you-come-over.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -36,6 +36,8 @@ namespace Kannon.Components
         public void Load(Microsoft.Xna.Framework.Content.ContentManager cm)
         {
             m_Texture = cm.Load<Texture2D>(m_Filename);
+            if (m_Origin.Value == Vector2.Zero)
+                m_Origin.Value = new Vector2(m_Texture.Width / 2, m_Texture.Height / 2);
         }
 
         public void Render(SpriteBatch sb)
@@ -46,7 +48,11 @@ namespace Kannon.Components
         public override void Parse(System.Xml.XmlNode data)
         {
             if (data.Attributes["layer"] != null)
-                Layer = Int32.Parse(data.Attributes["layer"].Value);
+            {
+                int newLayer = Int32.Parse(data.Attributes["layer"].Value);
+                XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics").ChangeLayer(this, Layer, newLayer);
+                Layer = newLayer;
+            }
             if (data.Attributes["file"] != null)
                 m_Filename = data.Attributes["file"].Value;
             else

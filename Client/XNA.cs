@@ -16,7 +16,9 @@ namespace Kannon
 {
     public class XNAGame : Microsoft.Xna.Framework.Game
     {
-        Entity ent;
+        Entity CamA;
+        Entity CamB;
+        Entity currentSelected;
 
         GraphicsDeviceManager graphics;
         public GraphicsDeviceManager Graphics
@@ -107,8 +109,11 @@ namespace Kannon
         /// </summary>
         protected override void Initialize()
         {
+            GlobalProperties.Instance.AddProperty<Vector2>("ScreenDimensions", new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height));
+
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.StaticRenderable));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Sound));
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Camera));
 
             m_Broadphases = new Dictionary<string, IBroadphase>();
             m_Broadphases.Add("Generic", new Broadphases.Generic());
@@ -124,7 +129,9 @@ namespace Kannon
             ent.AddComponent("StaticRenderable");
             */
             System.Collections.Generic.List<Entity> set = EntityFactory.ProduceSet("TestSetA");
-            ent = set[0];
+            CamA = set[0];
+            CamB = set[1];
+            currentSelected = CamA;
             if( InitializeEvent != null )
                 InitializeEvent();
 
@@ -167,18 +174,47 @@ namespace Kannon
                     flagPressed = true;
                     if (!flagPlaying)
                     {
-                        ent.InvokeEvent("Play", null);
+                        CamB.InvokeEvent("Play", null);
+                        CamB.InvokeEvent("SetActiveCamera", null);
+                        currentSelected = CamB;
                         flagPlaying = true;
                     }
                     else
                     {
-                        ent.InvokeEvent("Pause", null);
+                        CamA.InvokeEvent("Play", null);
+                        CamA.InvokeEvent("SetActiveCamera", null);
+                        currentSelected = CamA;
                         flagPlaying = false;
                     }
                 }
             }
             else
                 flagPressed = false;
+
+            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.Right))
+            {
+                currentSelected.GetProperty<Vector2>("Position").Value += Vector2.UnitX * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            } 
+            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.Left))
+            {
+                currentSelected.GetProperty<Vector2>("Position").Value -= Vector2.UnitX * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.Down))
+            {
+                currentSelected.GetProperty<Vector2>("Position").Value += Vector2.UnitY * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.Up))
+            {
+                currentSelected.GetProperty<Vector2>("Position").Value -= Vector2.UnitY * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.PageUp))
+            {
+                currentSelected.GetProperty<float>("Zoom").Value -= 0.01f;
+            }
+            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.PageDown))
+            {
+                currentSelected.GetProperty<float>("Zoom").Value += 0.01f;
+            }
 
             if( UpdateEvent != null )
                 UpdateEvent((float)gameTime.ElapsedGameTime.TotalMilliseconds);

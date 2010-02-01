@@ -205,7 +205,19 @@ namespace Kannon
                                     foreach (XmlNode node in newEnt.m_Components)
                                     {
                                         if (node.Attributes["name"] != null && node.Attributes["name"].Value == name)
+                                        {
+                                            foreach (XmlAttribute attrib in comp.Attributes)
+                                            {
+                                                if (node.Attributes[attrib.Name] == null)
+                                                    if (attrib.Name != "mod")
+                                                    {
+                                                        node.Attributes.Append(node.OwnerDocument.CreateAttribute(attrib.Name));
+                                                        node.Attributes[attrib.Name].Value = attrib.Value;
+                                                    }
+                                            }
+
                                             node.InnerXml = node.ZipTogether(comp).InnerXml;
+                                        }
                                     }
                                 }
                                 else if (comp.Name.ToLower() == "property")
@@ -515,6 +527,17 @@ namespace Kannon
         {
             // Clone it, otherwise we get weird artifacts in the calling node.
             XmlNode ret = node.CloneNode(true);
+            
+            // Add any attributes that aren't already there, and that aren't mod
+            foreach (XmlAttribute attrib in customization.Attributes)
+            {
+                if (ret.Attributes[attrib.Name] == null)
+                    if (attrib.Name != "mod")
+                    {
+                        ret.Attributes.Append(ret.OwnerDocument.CreateAttribute(attrib.Name));
+                        ret.Attributes[attrib.Name].Value = attrib.Value;
+                    }
+            }
             // For each of the customization points
             foreach (XmlNode child in customization.ChildNodes)
             {
