@@ -114,6 +114,7 @@ namespace Kannon
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.StaticRenderable));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Sound));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Camera));
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.KeyboardController));
 
             m_Broadphases = new Dictionary<string, IBroadphase>();
             m_Broadphases.Add("Generic", new Broadphases.Generic());
@@ -174,15 +175,15 @@ namespace Kannon
                     flagPressed = true;
                     if (!flagPlaying)
                     {
-                        CamB.InvokeEvent("Play", null);
-                        CamB.InvokeEvent("SetActiveCamera", null);
+                        CamB.InvokeEvent("SetActive", null);
+                        CamA.InvokeEvent("SetInactive", null);
                         currentSelected = CamB;
                         flagPlaying = true;
                     }
                     else
                     {
-                        CamA.InvokeEvent("Play", null);
-                        CamA.InvokeEvent("SetActiveCamera", null);
+                        CamA.InvokeEvent("SetActive", null);
+                        CamB.InvokeEvent("SetInactive", null);
                         currentSelected = CamA;
                         flagPlaying = false;
                     }
@@ -191,22 +192,6 @@ namespace Kannon
             else
                 flagPressed = false;
 
-            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.Right))
-            {
-                currentSelected.GetProperty<Vector2>("Position").Value += Vector2.UnitX * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            } 
-            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.Left))
-            {
-                currentSelected.GetProperty<Vector2>("Position").Value -= Vector2.UnitX * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.Down))
-            {
-                currentSelected.GetProperty<Vector2>("Position").Value += Vector2.UnitY * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.Up))
-            {
-                currentSelected.GetProperty<Vector2>("Position").Value -= Vector2.UnitY * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
             if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.PageUp))
             {
                 currentSelected.GetProperty<float>("Zoom").Value -= 0.01f;

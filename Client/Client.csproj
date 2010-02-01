@@ -42,6 +42,7 @@
     <Compile Include="Entity Framework\Component.cs" />
     <Compile Include="Entity Framework\ComponentFactory.cs" />
     <Compile Include="Entity Framework\Components\Camera.cs" />
+    <Compile Include="Entity Framework\Components\Controller.cs" />
     <Compile Include="Entity Framework\Components\IGenericComponent.cs" />
     <Compile Include="Entity Framework\Components\ContentComponents.cs" />
     <Compile Include="Entity Framework\Components\Sound.cs" />

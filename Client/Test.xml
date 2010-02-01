@@ -6,8 +6,8 @@
       <Component type="Camera" name="Camera" mod="Modify" active="true"/>
       <Component type="Sound" name="Sound" mod="Add">
         <Sound file="i-see-you">
-          <Event event="Play" action="play"/>
-          <Event event="Pause" action="pause"/>
+          <Event event="SetActive" action="play"/>
+          <Event event="SetInactive" action="stop"/>
         </Sound>
       </Component>
     </Entity>
@@ -16,13 +16,10 @@
       <Component type="Camera" name="Camera" mod="Modify" active="false"/>
       <Component type="Sound" name="Sound" mod="Add">
         <Sound file="there-you-are">
-          <Event event="Play" action="play"/>
-          <Event event="Pause" action="pause"/>
+          <Event event="SetActive" action="play"/>
+          <Event event="SetInactive" action="stop"/>
         </Sound>
       </Component>
-    </Entity>
-    
-    <Entity base="EntityB">
     </Entity>
 
     <Entity base="EntityC">
@@ -33,6 +30,33 @@
 
     <Entity base="EntityE">
     </Entity>
+    
+    <Entity base="EntityC">
+      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+        <Vector2>
+          <X>-200</X>
+          <Y>0</Y>
+        </Vector2>
+      </Property>
+    </Entity>
+
+    <Entity base="EntityD">
+      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+        <Vector2>
+          <X>-200</X>
+          <Y>0</Y>
+        </Vector2>
+      </Property>
+    </Entity>
+
+    <Entity base="EntityE">
+      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+        <Vector2>
+          <X>-200</X>
+          <Y>0</Y>
+        </Vector2>
+      </Property>
+    </Entity>
   </Set>
   
   <Entity name="Camera">
@@ -41,6 +65,7 @@
     </Property>
     <Component type="StaticRenderable" name="ComponentA" layer="1" file="Camera"/>
     <Component type="Camera" name="Camera"/>
+    <Component type="KeyboardController" name="Keyboard"/>
   </Entity>
 
   <Entity name="EntityB">
@@ -54,19 +79,13 @@
       <float>.7178</float>
     </Property>
     <Component type="StaticRenderable" name="ComponentA" layer="0"/>    
-    <Component type="Sound" name="Sound">
-      <Sound file="StillAlive">
-        <Event event="Play" action="Play"/>
-        <Event event="Pause" action="Pause"/>
-      </Sound>
-    </Component>
   </Entity>
 
   <Entity name="EntityC">
     <Property name ="Position" type="Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
       <Vector2>
-        <X>200</X>
-        <Y>200</Y>
+        <X>0</X>
+        <Y>0</Y>
       </Vector2>
     </Property>
     <Property name="Rotation" type="System.Single">

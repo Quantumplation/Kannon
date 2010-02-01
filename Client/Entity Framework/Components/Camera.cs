@@ -29,7 +29,7 @@ namespace Kannon.Components
             ZoomChanged(0, m_Zoom.Value);
             PositionChanged(Vector2.Zero, m_Position.Value);
             
-            Entity.AddEvent("SetActiveCamera", (o) => SetActiveCamera());
+            Entity.AddEvent("SetActive", (o) => SetActiveCamera());
         }
 
         void SetActiveCamera()
