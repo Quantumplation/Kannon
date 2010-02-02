@@ -51,6 +51,15 @@ namespace Kannon.Components
                 m_PlayingSounds[name].Pause();
         }
 
+        public void Stop(String name)
+        {
+            if (m_PlayingSounds.ContainsKey(name))
+            {
+                m_PlayingSounds[name].Stop();
+                m_PlayingSounds.Remove(name);
+            }
+        }
+
         public override void Parse(System.Xml.XmlNode data)
         {
             foreach (XmlNode child in data)
@@ -68,6 +77,9 @@ namespace Kannon.Components
                                 break;
                             case "pause":
                                 Entity.AddEvent(innerChild.Attributes["event"].Value, (o) => Pause(filename));
+                                break;
+                            case "stop":
+                                Entity.AddEvent(innerChild.Attributes["event"].Value, (o) => Stop(filename));
                                 break;
                         }
                     }

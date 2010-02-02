@@ -484,7 +484,8 @@ namespace Kannon
                                             "" : 
                                             node.Attributes["name"].Value;
                         Component c = ent.AddComponent(compType, compName);
-                        c.Parse(node);
+                        if( c != null )
+                            c.Parse(node);
                     }
                 }
                 return ent;

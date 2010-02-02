@@ -12,9 +12,13 @@ namespace Kannon.Broadphases
     /// </summary>
     public class Generic : IBroadphase
     {
+        List<Components.IGenericComponent> m_Components;
+
         public Generic()
         {
             ComponentFactory.RegisterCreatedCallback<Components.IGenericComponent>(this.RegisterComponent);
+            XNAGame.Instance.UpdateEvent += Do;
+            m_Components = new List<Components.IGenericComponent>();
         }
 
         public void RegisterComponent(Component c)
@@ -57,8 +61,6 @@ namespace Kannon.Broadphases
             foreach (Components.IGenericComponent generic in m_Components)
                 generic.Update(elapsedTime);
         }
-
-        List<Components.IGenericComponent> m_Components;
 
         public float ExecutionFrequency
         {
