@@ -80,10 +80,13 @@ namespace Kannon.Broadphases
         /// <summary>
         /// Public Constructor
         /// </summary>
-        public Input()
+        public Input(float heldThreshold)
         {
             m_Keys = new Dictionary<Keys, KeyData>();
             m_Mouse = new MouseData();
+            m_Mouse.mouseButtons = new bool[3];
+            m_Mouse.downFor = new float[3];
+            HeldThreshold = heldThreshold;
 
             XNAGame.Instance.UpdateEvent += Do;
         }
@@ -93,6 +96,11 @@ namespace Kannon.Broadphases
             if (m_Keys.ContainsKey(key))
                 return m_Keys[key].downFor > 0;
             return false;
+        }
+
+        public Boolean IsDown(Int32 mouseButton)
+        {
+            return m_Mouse.mouseButtons[mouseButton];
         }
 
         /// <summary>
@@ -106,7 +114,7 @@ namespace Kannon.Broadphases
                 ExecutingTooSlowly = elapsedTime > 2 * ExecutionFrequency;
 
                 DoKeyboard(elapsedTime);
-                //DoMouse(elapsedTime);
+                DoMouse(elapsedTime);
 
             }
             else
@@ -157,29 +165,32 @@ namespace Kannon.Broadphases
         private void DoMouse(float elapsedTime)
         {
             MouseState mouseState = Mouse.GetState();
+            bool triggerPressed = false, triggerHeld = false, triggerReleased = false;
             // Position
             if (m_Mouse.mouseX != mouseState.X || m_Mouse.mouseY != mouseState.Y)
             {
                 m_Mouse.mouseX = mouseState.X;
                 m_Mouse.mouseY = mouseState.Y;
+                if (m_Mouse.mouseButtons[0])
+                    triggerHeld = true;
                 if( MouseMoved != null )
                     MouseMoved(m_Mouse);
             }
 
-            bool triggerPressed = false, triggerHeld = false, triggerReleased = false;
 
             // Left
             if (!m_Mouse.mouseButtons[0] && mouseState.LeftButton == ButtonState.Pressed)
             {
                 triggerPressed = true;
+                m_Mouse.mouseButtons[0] = true;
             }
-            m_Mouse.mouseButtons[0] = mouseState.LeftButton == ButtonState.Pressed;
-            if (!m_Mouse.mouseButtons[0])
+            else if (m_Mouse.mouseButtons[0] && mouseState.LeftButton == ButtonState.Released)
             {
                 m_Mouse.downFor[0] = 0;
                 triggerReleased = true;
+                m_Mouse.mouseButtons[0] = false;
             }
-            else
+            else if( m_Mouse.mouseButtons[0] && mouseState.LeftButton == ButtonState.Pressed )
             {
                 m_Mouse.downFor[0] += (float)elapsedTime;
                 if (m_Mouse.downFor[0] > HeldThreshold)
@@ -190,14 +201,15 @@ namespace Kannon.Broadphases
             if (!m_Mouse.mouseButtons[1] && mouseState.MiddleButton == ButtonState.Pressed)
             {
                 triggerPressed = true;
+                m_Mouse.mouseButtons[1] = true;
             }
-            m_Mouse.mouseButtons[1] = mouseState.MiddleButton == ButtonState.Pressed;
-            if (!m_Mouse.mouseButtons[0])
+            else if (m_Mouse.mouseButtons[1] && mouseState.MiddleButton == ButtonState.Released)
             {
                 m_Mouse.downFor[1] = 0;
                 triggerReleased = true;
+                m_Mouse.mouseButtons[1] = false;
             }
-            else
+            else if (m_Mouse.mouseButtons[1] && mouseState.MiddleButton == ButtonState.Pressed)
             {
                 m_Mouse.downFor[1] += (float)elapsedTime;
                 if (m_Mouse.downFor[1] > HeldThreshold)
@@ -208,31 +220,33 @@ namespace Kannon.Broadphases
             if (!m_Mouse.mouseButtons[2] && mouseState.RightButton == ButtonState.Pressed)
             {
                 triggerPressed = true;
+                m_Mouse.mouseButtons[2] = true;
             }
-            m_Mouse.mouseButtons[2] = mouseState.RightButton == ButtonState.Pressed;
-            if (!m_Mouse.mouseButtons[2])
+            else if (m_Mouse.mouseButtons[2] && mouseState.RightButton == ButtonState.Released)
             {
                 m_Mouse.downFor[2] = 0;
                 triggerReleased = true;
+                m_Mouse.mouseButtons[2] = false;
             }
-            else
+            else if (m_Mouse.mouseButtons[2] && mouseState.RightButton == ButtonState.Pressed)
             {
                 m_Mouse.downFor[2] += (float)elapsedTime;
                 if (m_Mouse.downFor[2] > HeldThreshold)
                     triggerHeld = true;
             }
 
-            if (triggerPressed)
+            if (triggerPressed && ButtonClicked != null)
                 ButtonClicked(m_Mouse);
-            if (triggerHeld)
+            if (triggerHeld && ButtonHeld != null)
                 ButtonHeld(m_Mouse);
-            if (triggerReleased)
+            if (triggerReleased && ButtonReleased != null)
                 ButtonReleased(m_Mouse);
 
             // Wheel
             if (m_Mouse.wheelPosition != mouseState.ScrollWheelValue)
             {
-                ScrollWheelMoved(m_Mouse);
+                if( ScrollWheelMoved != null )
+                    ScrollWheelMoved(m_Mouse);
                 m_Mouse.wheelPosition = mouseState.ScrollWheelValue;
             }
         }

@@ -115,20 +115,17 @@ namespace Kannon
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Sound));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Camera));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.KeyboardController));
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Cursor));
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.SelectionBox));
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Selectable));
 
             m_Broadphases = new Dictionary<string, IBroadphase>();
             m_Broadphases.Add("Generic", new Broadphases.Generic());
             m_Broadphases.Add("Graphics", new Broadphases.Graphics(this.GraphicsDevice));
             m_Broadphases.Add("Content", new Broadphases.Content(this.Content));
-            m_Broadphases.Add("Input", new Broadphases.Input());
+            m_Broadphases.Add("Input", new Broadphases.Input(450));
+            m_Broadphases.Add("Selection", new Broadphases.Selection());
 
-            /*Entity ent = new Entity();
-            ent.AddProperty<float>("Scale", .5f);
-            ent.AddProperty<float>("Rotation", (float)Math.PI / 6);
-            ent.AddProperty<Vector2>("Origin", new Vector2(16, 16));
-            ent.AddProperty<Vector2>("Position", new Vector2(200, 200));
-            ent.AddComponent("StaticRenderable");
-            */
             System.Collections.Generic.List<Entity> set = EntityFactory.ProduceSet("TestSetA");
             CamA = set[0];
             CamB = set[1];
@@ -223,7 +220,7 @@ namespace Kannon
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
             if (RenderEvent != null)
                 RenderEvent((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             base.Draw(gameTime);

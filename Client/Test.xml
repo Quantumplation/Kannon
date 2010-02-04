@@ -22,6 +22,8 @@
       </Component>
     </Entity>
 
+    <Entity base="Cursor"/>
+
     <Entity base="EntityC">
     </Entity>
 
@@ -29,21 +31,33 @@
     </Entity>
 
     <Entity base="EntityE">
+      <Component type="Sound" name="sound" mod="Add">
+        <Sound file="hello-friend">
+          <Event event="Select" action="play"/>
+          <Event event="Deselect" action="stop"/>
+        </Sound>
+      </Component>
     </Entity>
     
     <Entity base="EntityC">
       <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
         <Vector2>
-          <X>-200</X>
+          <X>0</X>
           <Y>0</Y>
         </Vector2>
       </Property>
+      <Component type="Sound" name="sound" mod="Add">
+        <Sound file="Gotcha">
+          <Event event="Select" action="play"/>
+          <Event event="Deselect" action="stop"/>
+        </Sound>
+      </Component>
     </Entity>
 
     <Entity base="EntityD">
       <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
         <Vector2>
-          <X>-200</X>
+          <X>0</X>
           <Y>0</Y>
         </Vector2>
       </Property>
@@ -52,7 +66,7 @@
     <Entity base="EntityE">
       <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
         <Vector2>
-          <X>-200</X>
+          <X>0</X>
           <Y>0</Y>
         </Vector2>
       </Property>
@@ -66,6 +80,12 @@
     <Component type="StaticRenderable" name="ComponentA" layer="1" file="Camera"/>
     <Component type="Camera" name="Camera"/>
     <Component type="KeyboardController" name="Keyboard"/>
+  </Entity>
+
+  <Entity name="Cursor">
+    <Component type="StaticRenderable" name="cursorGraphic" layer="0"/>
+    <Component type="Cursor" name="cursorComponent"/>
+    <Component type="SelectionBox" name="selectionBox"/>
   </Entity>
 
   <Entity name="EntityB">
@@ -84,14 +104,12 @@
   <Entity name="EntityC">
     <Property name ="Position" type="Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
       <Vector2>
-        <X>0</X>
-        <Y>0</Y>
+        <X>200</X>
+        <Y>200</Y>
       </Vector2>
     </Property>
-    <Property name="Rotation" type="System.Single">
-      <float>.7178</float>
-    </Property>
     <Component type="StaticRenderable" name="ComponentA" layer="2"/>
+    <Component type="Selectable" name="Selectable"/>
   </Entity>
   <Entity name="EntityD">
     <Property name ="Position" type="Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
@@ -104,6 +122,7 @@
       <float>.7178</float>
     </Property>
     <Component type="StaticRenderable" name="ComponentA" layer="3"/>
+    <Component type="Selectable" name="Selectable"/>
   </Entity>
   <Entity name="EntityE">
     <Property name ="Position" type="Microsoft.Xna.Framework.Vector2, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
@@ -116,5 +135,6 @@
       <float>.7178</float>
     </Property>
     <Component type="StaticRenderable" name="ComponentA" layer="4"/>
+    <Component type="Selectable" name="Selectable"/>
   </Entity>
 </Project>

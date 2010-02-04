@@ -58,7 +58,7 @@ namespace Kannon
             {
                 Component c = m_FactoryMethods[type](ent, name);
                 foreach (Type t in m_CreationCallbacks.Keys)
-                    if (c.GetType().GetInterface(t.Name) != null)
+                    if (c.GetType().GetInterface(t.Name) != null || c.GetType().IsSubclassOf(t) || c.GetType() == t)
                         m_CreationCallbacks[t](c);
                 return c;
             }

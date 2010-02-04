@@ -63,17 +63,32 @@ namespace Kannon.Broadphases
             }
         }
 
+        public ITransformer GetTransformer(Int32 layer)
+        {
+            return m_Transformers[layer];
+        }
+
         public void ChangeLayer(Components.IRenderableComponent comp, Int32 oldLayer, Int32 newLayer)
         {
-            if (m_Components.ContainsKey(oldLayer))
-                if (m_Components[oldLayer].Contains(comp))
+            RemoveFromLayer(comp, oldLayer);
+            AddToLayer(comp, newLayer);
+        }
+
+        public void AddToLayer(Components.IRenderableComponent comp, Int32 layer)
+        {
+            if (!m_Components.ContainsKey(layer))
+            {
+                m_Components.Add(layer, new List<Components.IRenderableComponent>());
+            }
+            m_Components[layer].Add(comp);
+        }
+
+        public void RemoveFromLayer(Components.IRenderableComponent comp, Int32 layer)
+        {
+            if (m_Components.ContainsKey(layer))
+                if (m_Components[layer].Contains(comp))
                 {
-                    m_Components[oldLayer].Remove(comp);
-                    if (!m_Components.ContainsKey(newLayer))
-                    {
-                        m_Components.Add(newLayer, new List<Components.IRenderableComponent>());
-                    }
-                    m_Components[newLayer].Add(comp);
+                    m_Components[layer].Remove(comp);
                 }
 
         }
@@ -103,7 +118,7 @@ namespace Kannon.Broadphases
                     m_SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.None, (m_Transformers[layer] ?? IDTransformer.Identity).GetTransformation(layer)); ;
 
                     foreach (Components.IRenderableComponent renderable in x.Value)
-                        renderable.Render(m_SpriteBatch);
+                        renderable.Render(m_SpriteBatch, layer);
 
                     m_SpriteBatch.End();
                 }
