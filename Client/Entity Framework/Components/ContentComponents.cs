@@ -15,7 +15,7 @@ namespace Kannon.Components
             get;
             set;
         }
-        void Render(SpriteBatch sb);
+        void Render(SpriteBatch sb, int Layer);
     }
 
     public interface IContentComponent

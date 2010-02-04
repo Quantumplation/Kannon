@@ -39,12 +39,16 @@
     <Compile Include="Broadphases\Graphics.cs" />
     <Compile Include="Broadphases\IBroadphase.cs" />
     <Compile Include="Broadphases\Input.cs" />
+    <Compile Include="Broadphases\Selection.cs" />
     <Compile Include="Entity Framework\Component.cs" />
     <Compile Include="Entity Framework\ComponentFactory.cs" />
     <Compile Include="Entity Framework\Components\Camera.cs" />
     <Compile Include="Entity Framework\Components\Controller.cs" />
+    <Compile Include="Entity Framework\Components\Cursor.cs" />
     <Compile Include="Entity Framework\Components\IGenericComponent.cs" />
     <Compile Include="Entity Framework\Components\ContentComponents.cs" />
+    <Compile Include="Entity Framework\Components\Selectable.cs" />
+    <Compile Include="Entity Framework\Components\SelectionBox.cs" />
     <Compile Include="Entity Framework\Components\Sound.cs" />
     <Compile Include="Entity Framework\Components\StaticRenderable.cs" />
     <Compile Include="Entity Framework\Entity.cs" />
@@ -100,6 +104,9 @@
     </None>
     <None Include="Content\no-hard-feelings.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Selection.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\sorry-we-re-closed.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
