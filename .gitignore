@@ -5,4 +5,3 @@ bin/
 *.contentproj.user
 *.csproj.Debug.cachefile
 Client/Content/
-Content Pipeline/Content Compiler/Content/
