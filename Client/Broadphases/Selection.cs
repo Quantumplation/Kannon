@@ -8,6 +8,10 @@ using Microsoft.Xna.Framework;
 
 namespace Kannon.Broadphases
 {
+    /// <summary>
+    /// Selection broadphase.
+    /// Very much a work in progress, will need heavy work when camera gets rewritten.
+    /// </summary>
     class Selection : IBroadphase
     {
         SortedList<Int32, List<Selectable>> m_Components;
@@ -41,8 +45,7 @@ namespace Kannon.Broadphases
                 }
                 m_Selected.Clear();
 
-                Vector2 translated = Camera.ScreenToWorld(new Vector2(data.mouseX, data.mouseY), 1);
-                Rectangle r = new Rectangle((int)translated.X, (int)translated.Y, 1, 1);
+                Rectangle r = new Rectangle((int)data.mouseX, (int)data.mouseY, 1, 1);
                 foreach (Int32 key in m_Components.Keys)
                 {
                     foreach (Selectable sel in m_Components[key])
@@ -94,7 +97,7 @@ namespace Kannon.Broadphases
 
         public void Do(float elapsedTime)
         {
-            if (m_SelectionBox != null && m_SelectionBox.Selecting)
+            /*if (m_SelectionBox != null && m_SelectionBox.Selecting)
             {
                 foreach (Int32 key in m_Components.Keys)
                 {
@@ -118,7 +121,7 @@ namespace Kannon.Broadphases
                         }
                     }
                 }
-            }
+            }*/
         }
 
         public float ExecutionFrequency

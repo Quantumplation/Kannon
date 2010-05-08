@@ -34,9 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Broadphases\Content.cs" />
+    <Compile Include="Broadphases\Graphics\Content.cs" />
     <Compile Include="Broadphases\Generic.cs" />
-    <Compile Include="Broadphases\Graphics.cs" />
+    <Compile Include="Broadphases\Graphics\Graphics.cs" />
+    <Compile Include="Broadphases\Graphics\RenderPass.cs" />
     <Compile Include="Broadphases\IBroadphase.cs" />
     <Compile Include="Broadphases\Input.cs" />
     <Compile Include="Broadphases\Selection.cs" />
@@ -84,6 +85,9 @@
     <None Include="Content\could-you-come-over.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\ERROR_SOLID.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\hello-friend.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -104,6 +108,9 @@
     </None>
     <None Include="Content\no-hard-feelings.xnb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Saturation.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Selection.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

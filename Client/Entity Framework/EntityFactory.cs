@@ -7,6 +7,13 @@ using System.Xml;
 
 namespace Kannon
 {
+    /* NOTE BIG NOTE NOTE NOTE:
+     * 
+     * THIS CODE IS EXTREMELY UGLY, CONFUSING, AND SPAGHETTI.
+     * PERUSE AT YOUR OWN RISK.
+     * 
+     */
+
     /// <summary>
     /// Definition of a set (group of entities)
     /// </summary>

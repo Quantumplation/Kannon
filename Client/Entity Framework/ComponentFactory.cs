@@ -7,14 +7,17 @@ using System.Text;
 namespace Kannon
 {
     /// <summary>
-    /// Component Creation delegate.  Used in order to create a Component.
+    /// Component Creation delegate.  Used in order to CREATE a Component.
+    /// BIG NOTE: Entity is used here to pull data from. NEVER use this
+    /// callback to add the created component to the specified entity.
+    /// That is done elsewhere.
     /// </summary>
     /// <param name="ent">Entity to create the component on.</param>
     /// <param name="name">Name of the component.</param>
     /// <returns>Newly created component.</returns>
     public delegate Component ComponentCreation(Entity ent, string name);
     /// <summary>
-    /// Component CreaTED delegate.  Used WHEN a component is created.
+    /// Component CreaTED delegate.  Used WHEN a component is created, not TO create it.
     /// </summary>
     /// <param name="c"></param>
     public delegate void ComponentCreated(Component c);
@@ -52,16 +55,24 @@ namespace Kannon
         /// <returns>The newly created component, or null.</returns>
         public static Component Create(Entity ent, String type, String name = "")
         {
+            // If the name is null, just use the type as the name.
             if( name == "" )
                 name = type;
+            // Make sure we know how to create this entity
             if (m_FactoryMethods.ContainsKey(type))
             {
+                // Look in the factory method for that type, and pass it the entity and name of the component.
                 Component c = m_FactoryMethods[type](ent, name);
+                // Now, look through all our "Creation callbacks", and let anyone who cares about this type of component
+                // react to it.  For example, if something cares only about IRenderable components, let them know every
+                // time we make one.
                 foreach (Type t in m_CreationCallbacks.Keys)
                     if (c.GetType().GetInterface(t.Name) != null || c.GetType().IsSubclassOf(t) || c.GetType() == t)
                         m_CreationCallbacks[t](c);
                 return c;
             }
+            else
+            { /*Warning*/}
             return null;
         }
 
@@ -72,6 +83,7 @@ namespace Kannon
         /// <param name="factory">Factory method.</param>
         public static void RegisterComponentType(String name, ComponentCreation factory, bool Overwrite = false)
         {
+            // Should we overwrite if something is already there?
             if (Overwrite)
                 m_FactoryMethods.Remove(name);
             if (!m_FactoryMethods.ContainsKey(name))
@@ -79,7 +91,7 @@ namespace Kannon
         }
 
         /// <summary>
-        /// Register a callback for when a component which subclasses t gets created.  This allows, for example, Graphics to automatically pick up IRenderable components.
+        /// Register a callback for when a component which subclasses or Implements T gets created.  This allows, for example, Graphics to automatically pick up IRenderable components.
         /// </summary>
         /// <param name="t">Type to listen for.</param>
         /// <param name="callback">Callback to invoke when a component sublcassing t gets created.</param>

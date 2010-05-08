@@ -168,11 +168,12 @@ namespace Kannon
             }
         }
 
+        /// <summary>
+        /// Attempt to parse XML into the value type of this property.
+        /// </summary>
         public void Parse(XmlNode data)
         {
             XmlSerializer ser = new XmlSerializer(typeof(T));
-            //XmlWriter writ = XmlWriter.Create("TestInt.xml");
-            //ser.Serialize(writ, new Microsoft.Xna.Framework.Vector2(1.0f, 1.0f));
             object obj = ser.Deserialize(new XmlNodeReader(data));
             if (obj is T)
                 m_Internal = (T)obj;

@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Kannon
 {
+    /// <summary>
+    /// Represents a global property collection.
+    /// Note: Currently using singleton pattern.  Switch to static class? Can static classes implement interfaces?
+    /// </summary>
     public class GlobalProperties : IPropertyContainer
     {
         /// <summary>

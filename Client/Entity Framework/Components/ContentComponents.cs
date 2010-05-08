@@ -8,18 +8,27 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Kannon.Components
 {
-    public interface IRenderableComponent
+    /// <summary>
+    /// Something which can be rendered.
+    /// </summary>
+    public interface IRenderable
     {
-        Int32 Layer
-        {
-            get;
-            set;
-        }
-        void Render(SpriteBatch sb, int Layer);
+        /// <summary>
+        /// Render this, using the spritebatch sb, on the pass PassID
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="PassID">
+        /// Defaults to "Unsorted". This allows for custom behavior depending on 
+        /// which pass is being rendered, if an object is on multiple passes.</param>
+        void Render(SpriteBatch sb, string PassID = "Unsorted");
     }
 
-    public interface IContentComponent
+    /// <summary>
+    /// Something which has content which needs to be loaded sometime early on.
+    /// </summary>
+    public interface IContent
     {
+        // Load the content, using Content Manager.
         void Load(ContentManager cm);
     }
 }

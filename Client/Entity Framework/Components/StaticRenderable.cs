@@ -8,7 +8,47 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Kannon.Components
 {
-    class StaticRenderable : Component, IRenderableComponent, IContentComponent
+    /// <summary>
+    /// Add a convenience method to produce a Vector2 from a Vector3.
+    /// </summary>
+    public static class VectorExtensions
+    {
+        public static Vector2 XY(this Vector3 vec)
+        {
+            return new Vector2(vec.X, vec.Y);
+        }
+
+        public static Vector2 YX(this Vector3 vec)
+        {
+            return new Vector2(vec.Y, vec.X);
+        }
+
+        public static Vector2 XZ(this Vector3 vec)
+        {
+            return new Vector2(vec.X, vec.Z);
+        }
+
+        public static Vector2 ZX(this Vector3 vec)
+        {
+            return new Vector2(vec.Z, vec.X);
+        }
+
+        public static Vector2 YZ(this Vector3 vec)
+        {
+            return new Vector2(vec.Y, vec.Z);
+        }
+
+        public static Vector2 ZY(this Vector3 vec)
+        {
+            return new Vector2(vec.Z, vec.Y);
+        }
+    }
+
+
+    /// <summary>
+    /// Makes an entity a static (not animated) renderable component.  Needs work =P
+    /// </summary>
+    class StaticRenderable : Component, IRenderable, IContent
     {
         [ComponentCreator]
         public static Component Create(Entity ent, String name)
@@ -16,25 +56,22 @@ namespace Kannon.Components
             return new StaticRenderable(ent, name);
         }
 
-        Property<Vector2> m_Position;
+        Property<Vector3> m_Position;
         Property<Vector2> m_Origin;
         Property<Vector2> m_Bounds;
         Property<float> m_Rotation;
         Property<float> m_Scale;
-        Property<Int32> m_Layer;
         String m_Filename;
         Texture2D m_Texture;
-
-        public bool Otherd = false;
+        String m_Pass;
 
         public StaticRenderable(Entity ent, String name) : base(ent, name)
         {
-            m_Position = Entity.AddProperty<Vector2>("Position", Vector2.Zero);
+            m_Position = Entity.AddProperty<Vector3>("Position", Vector3.Zero);
             m_Origin = Entity.AddProperty<Vector2>("Origin", Vector2.Zero);
             m_Bounds = Entity.AddProperty<Vector2>("Bounds", Vector2.Zero);
             m_Rotation = Entity.AddProperty<float>("Rotation", 0.0f);
             m_Scale = Entity.AddProperty<float>("Scale", 1.0f);
-            m_Layer = Entity.AddProperty<Int32>("Layer", 1);
         }
 
         public void Load(Microsoft.Xna.Framework.Content.ContentManager cm)
@@ -46,38 +83,25 @@ namespace Kannon.Components
                 m_Bounds.Value = new Vector2(m_Texture.Width, m_Texture.Height);
         }
 
-        public void Render(SpriteBatch sb, int Layer)
+        public void Render(SpriteBatch sb, String passID = "")
         {
             Color col = Color.White;
             if (Entity.GetProperty<bool>("Selected") != null && Entity.GetProperty<bool>("Selected").Value)
                 col = Color.Black;
-            sb.Draw(m_Texture, m_Position.Value, null, col, m_Rotation.Value, m_Origin.Value, m_Scale.Value, SpriteEffects.None, 0.0f);
+            sb.Draw(m_Texture, m_Position.Value.XY(), null, col, m_Rotation.Value, m_Origin.Value, m_Scale.Value, SpriteEffects.None, m_Position.Value.Z);
         }
 
         public override void Parse(System.Xml.XmlNode data)
         {
-            if (data.Attributes["layer"] != null)
+            if (data.Attributes["pass"] != null)
             {
-                int newLayer = Int32.Parse(data.Attributes["layer"].Value);
-                XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics").ChangeLayer(this, Layer, newLayer);
-                m_Layer.Value = newLayer;
+                m_Pass = data.Attributes["pass"].Value;
+                XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics").AddComponentToPass(this, m_Pass);
             }
             if (data.Attributes["file"] != null)
                 m_Filename = data.Attributes["file"].Value;
             else
-                m_Filename = "ERROR";
-        }
-
-        public Int32 Layer
-        {
-            get
-            {
-                return m_Layer.Value;
-            }
-            set
-            {
-                m_Layer.Value = value;
-            }
+                m_Filename = "ERROR_SOLID";
         }
     }
 }

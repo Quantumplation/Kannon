@@ -8,7 +8,11 @@ using System.Xml;
 
 namespace Kannon.Components
 {
-    class Sound : Component, IContentComponent
+    /// <summary>
+    /// Component that, when attached to an entity, can play a sound from that entities location.
+    /// Note: When new camera system is implemented, add 3D sound to this, perhaps?
+    /// </summary>
+    class Sound : Component, IContent
     {
         Dictionary<String, SoundEffect> m_Sounds;
         Dictionary<String, SoundEffectInstance> m_PlayingSounds;

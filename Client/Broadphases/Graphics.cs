@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,86 +14,104 @@ namespace Kannon.Broadphases
     /// </summary>
     public class Graphics :IBroadphase
     {
-        class ReverseCompararer : IComparer<Int32>
-        {
-            public int Compare(int x, int y)
-            {
-                return y.CompareTo(x);
-            }
-        }
-
-        private SpriteBatch m_SpriteBatch;
-        SortedDictionary<Int32, List<Components.IRenderableComponent>> m_Components;
-        ITransformer[] m_Transformers;
+        SpriteBatch m_SpriteBatch;
+        GraphicsDevice m_GraphicsDevice;
+        Dictionary<String, RenderPass> m_RenderPasses;
 
         public Graphics(GraphicsDevice gd)
         {
-            m_Components = new SortedDictionary<int, List<Components.IRenderableComponent>>(new ReverseCompararer());
-            m_Transformers = new ITransformer[100];
-
-            ComponentFactory.RegisterCreatedCallback<Components.IRenderableComponent>(this.RegisterComponent);
+            ComponentFactory.RegisterCreatedCallback<Components.IRenderable>(this.RegisterComponent);
             m_SpriteBatch = new SpriteBatch(gd);
+            m_GraphicsDevice = gd;
+
+            m_RenderPasses = new Dictionary<String,RenderPass>();
+            m_RenderPasses.Add("Unsorted", new RenderPass());
 
             XNAGame.Instance.RenderEvent += Do;
         }
 
+        /// <summary>
+        /// Register a renderable component.  For now, put it in the "Unsorted" layer.
+        /// </summary>
+        /// <param name="c"></param>
         public void RegisterComponent(Component c)
         {
-            Components.IRenderableComponent r = c as Components.IRenderableComponent;
-            if (!m_Components.ContainsKey(r.Layer))
-            {
-                m_Components.Add(r.Layer, new List<Components.IRenderableComponent>());
-            }
-            m_Components[r.Layer].Add(r);
+            m_RenderPasses["Unsorted"].RegisterComponent(c as Components.IRenderable);
         }
 
+        /// <summary>
+        /// Add a component to a pass.  This takes it out of the unsorted layer, and puts it in whatever you specify.
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="PassIDs"></param>
+        public void AddComponentToPass(Components.IRenderable r, params String[] PassIDs)
+        {
+            m_RenderPasses["Unsorted"].RemoveComponent(r);
+
+            foreach(String passID in PassIDs)
+            {
+                if( !m_RenderPasses.ContainsKey(passID) )
+                {
+                    // Err: Pass doesn't exist, creating default pass.
+                    m_RenderPasses.Add(passID, new RenderPass());
+                }
+                m_RenderPasses[passID].RegisterComponent(r);
+            }
+        }
+
+        /// <summary>
+        /// Removes a component from all passes.
+        /// </summary>
+        /// <param name="c"></param>
         public void RemoveComponent(Component c)
         {
-            m_Components.Remove((c as Components.IRenderableComponent).Layer);
-        }
-
-        public void SetTransformer(ITransformer trans, Int32 layerStart, Int32? layerEnd = null )
-        {
-            if (layerEnd > 100 || layerStart < 0)
-                throw new Exception("Layer must be between 0 and 100");
-            if (layerEnd == null)
-                layerEnd = layerStart;
-            for (int x = layerStart; x < layerEnd; x++)
+            foreach (RenderPass rp in m_RenderPasses.Values)
             {
-                m_Transformers[x] = trans;
+                rp.RemoveComponent(c as Components.IRenderable);
             }
         }
 
-        public ITransformer GetTransformer(Int32 layer)
+        /// <summary>
+        /// Removes a component from the specified pass.
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="PassIDs"></param>
+        public void RemoveComponentFromPass(Components.IRenderable r, params String[] PassIDs)
         {
-            return m_Transformers[layer];
-        }
-
-        public void ChangeLayer(Components.IRenderableComponent comp, Int32 oldLayer, Int32 newLayer)
-        {
-            RemoveFromLayer(comp, oldLayer);
-            AddToLayer(comp, newLayer);
-        }
-
-        public void AddToLayer(Components.IRenderableComponent comp, Int32 layer)
-        {
-            if (!m_Components.ContainsKey(layer))
+            foreach (String passID in PassIDs)
             {
-                m_Components.Add(layer, new List<Components.IRenderableComponent>());
+                if (m_RenderPasses.ContainsKey(passID))
+                    m_RenderPasses[passID].RemoveComponent(r);
             }
-            m_Components[layer].Add(comp);
         }
 
-        public void RemoveFromLayer(Components.IRenderableComponent comp, Int32 layer)
+        /// <summary>
+        /// Set the transformer trans for the specified pass ID's.
+        /// </summary>
+        /// <param name="trans"></param>
+        /// <param name="PassIDs"></param>
+        public void SetTransformer(ITransformer trans, params String[] PassIDs)
         {
-            if (m_Components.ContainsKey(layer))
-                if (m_Components[layer].Contains(comp))
-                {
-                    m_Components[layer].Remove(comp);
-                }
-
+            foreach (String passID in PassIDs)
+            {
+                if (m_RenderPasses.ContainsKey(passID))
+                    m_RenderPasses[passID].SetTransformer(trans);
+            }
         }
 
+        /// <summary>
+        /// Retrieve the transformer for the specified pass.
+        /// </summary>
+        /// <param name="PassID"></param>
+        /// <returns></returns>
+        public ITransformer GetTransformer(String PassID = "Unsorted")
+        {
+            return m_RenderPasses[PassID].GetTransformer();
+        }
+
+        /// <summary>
+        /// Makes sure we aren't rendering too fast.
+        /// </summary>
         private float internalTimer;
         public void Do(float elapsedTime)
         {
@@ -110,19 +129,8 @@ namespace Kannon.Broadphases
 
         protected void Render()
         {
-            foreach (var x in m_Components)
-            {
-                Int32 layer = x.Key;
-                if (m_Components[layer].Count > 0)
-                {
-                    m_SpriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.None, (m_Transformers[layer] ?? IDTransformer.Identity).GetTransformation(layer)); ;
-
-                    foreach (Components.IRenderableComponent renderable in x.Value)
-                        renderable.Render(m_SpriteBatch, layer);
-
-                    m_SpriteBatch.End();
-                }
-            }
+            foreach (RenderPass r in m_RenderPasses.Values)
+                r.Render(m_SpriteBatch);
         }
 
         public float ExecutionFrequency

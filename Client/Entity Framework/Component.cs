@@ -47,7 +47,7 @@ namespace Kannon
     }
 
     /// <summary>
-    /// A component.  Something an entity Is or Can Do.
+    /// A component.  Changes the behavior of an entity in some way.
     /// </summary>
     public abstract class Component
     {
@@ -78,6 +78,9 @@ namespace Kannon
             Name = name;
         }
 
+        /// <summary>
+        /// Parse an XMLNode, pulling component specific data out.
+        /// </summary>
         public abstract void Parse(XmlNode data);
     }
 }

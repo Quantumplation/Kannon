@@ -8,24 +8,27 @@ using Microsoft.Xna.Framework;
 
 namespace Kannon.Components
 {
-    class SelectionBox : Component, IRenderableComponent, IContentComponent
+    /// <summary>
+    /// When attached to an entity, uses the entities position
+    /// while the mouse button is held to create a selection box.
+    /// Note: This is very much a work in progress.  Once new camera system
+    /// is implemented, huge chunks of this will need to be rewritten.
+    /// </summary>
+    class SelectionBox : Component, IRenderable, IContent
     {
         Texture2D m_Image;
-        Vector2 m_StartPosition;
-        Vector2 m_CurrentPosition;
+        Vector3 m_StartPosition;
+        Vector3 m_CurrentPosition;
 
-        Property<Vector2> m_Position;
+        Property<Vector3> m_Position;
 
         Broadphases.Input m_InputObj;
 
+        private Rectangle m_Box;
         public Rectangle Box
         {
-            get
-            {
-                Vector2 transCurrent = Vector2.Transform(new Vector2(m_CurrentPosition.X, m_CurrentPosition.Y), Camera.ScreenToWorldMatrix(Layer));
-                return new Rectangle((int)m_StartPosition.X, (int)m_StartPosition.Y, (int)(transCurrent.X - m_StartPosition.X), (int)(transCurrent.Y - m_StartPosition.Y));
-            }
-            set{}
+            get { return m_Box; }
+            set { m_Box = value; }
         }
 
         [ComponentCreator]
@@ -37,7 +40,7 @@ namespace Kannon.Components
         public SelectionBox(Entity ent, String name)
             : base(ent, name)
         {
-            m_Position = Entity.AddProperty<Vector2>("Position", Vector2.Zero);
+            m_Position = Entity.AddProperty<Vector3>("Position", Vector3.Zero);
             m_InputObj = XNAGame.Instance.GetBroadphase<Broadphases.Input>("Input");
 
             m_InputObj.ButtonClicked += new Broadphases.MouseEventHandler(ButtonClicked);
@@ -49,9 +52,8 @@ namespace Kannon.Components
         {
             if (data.mouseButtons[0])
             {
-                Vector2 pos = Camera.ScreenToWorld(new Vector2(data.mouseX, data.mouseY), 1);
-                m_StartPosition = pos;
-                m_CurrentPosition = pos;
+                m_Box = new Rectangle((int)data.mouseX, (int)data.mouseY, 0, 0);
+                m_CurrentPosition = new Vector3(data.mouseX, data.mouseY, 0.0f);
             }
         }
 
@@ -59,30 +61,23 @@ namespace Kannon.Components
         {
             if( data.mouseButtons[0] )
             {
-                Vector2 pos = new Vector2(data.mouseX, data.mouseY);
+                Vector3 pos = new Vector3(data.mouseX, data.mouseY, 0.0f);
                 m_CurrentPosition = pos;
+                m_Box.Width = (int)pos.X - m_Box.X;
+                m_Box.Height = (int)pos.Y - m_Box.Y;
                 Selecting = true;
             }
         }
 
         void ButtonReleased(Broadphases.Input.MouseData data)
         {
-            m_StartPosition = Vector2.Zero;
-            m_CurrentPosition = Vector2.Zero;
+            Box = Rectangle.Empty;
             Selecting = false;
         }
 
         public override void Parse(System.Xml.XmlNode data)
         {
-        }
-
-        public int Layer
-        {
-            get
-            {
-                return 1;
-            }
-            set { }
+            XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics").AddComponentToPass(this, "UI");
         }
 
         public bool Selecting
@@ -91,16 +86,11 @@ namespace Kannon.Components
             set;
         }
 
-        public void Render(Microsoft.Xna.Framework.Graphics.SpriteBatch sb, int Layer)
+        public void Render(Microsoft.Xna.Framework.Graphics.SpriteBatch sb, String passID = "")
         {
             if (Selecting)
             {
-                Rectangle box = Box;
-                Vector2 tl = Vector2.Transform(Vector2.Transform(new Vector2(box.X, box.Y), Camera.WorldToScreenMatrix(1)), Camera.ScreenToWorldMatrix(Layer));
-                Vector2 bl = new Vector2(box.X+box.Width, box.Y+box.Height);
-                Rectangle newRect = new Rectangle((int)Math.Min(tl.X, bl.X), (int)Math.Min(tl.Y, bl.Y), (int)Math.Abs(bl.X - tl.X), (int)Math.Abs(bl.Y - tl.Y));
-
-                sb.Draw(m_Image, newRect, new Color(Color.DarkGreen, 150));
+                sb.Draw(m_Image, Box, new Color(Color.DarkGreen, 150));
             }
         }
 

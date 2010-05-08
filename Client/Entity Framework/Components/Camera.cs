@@ -1,17 +1,33 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Kannon.Components
 {
+    /// <summary>
+    /// Component that, when attached, keeps track of a view and projection matrix.
+    /// </summary>
     public class Camera : Component, ITransformer
     {
-        Matrix m_ScaleMatrix;
-        Matrix m_TranslationMatrix;
-        Matrix m_RotationMatrix;
+        /// <summary>
+        /// View and Projection matrices.
+        /// </summary>
+        Matrix m_View;
+        Matrix m_Proj;
 
+        /// <summary>
+        /// Properties from the entity or elsewhere.
+        /// </summary>
+        // The global property for width and height of the screen.
         Property<Vector2> m_ScreenDimensions;
-        Property<Vector2> m_Position;
+        // The position of the entity the camera is attached to.
+        Property<Vector3> m_Position;
+        // The rotation of the entity the camera is attached to.
         Property<float> m_Rotation;
+        // The zoom value specified by the entity (Obsolete?)
         Property<float> m_Zoom;
+        
+        //The pass this camera is located on.
+        string m_Pass;
 
         [ComponentCreator]
         public static Component Create(Entity ent, string name)
@@ -21,80 +37,122 @@ namespace Kannon.Components
 
         public Camera(Entity ent, string name) : base(ent, name)
         {
+            // Retrieve the Screen dimensions from global.
             m_ScreenDimensions = GlobalProperties.Instance.AddProperty<Vector2>("ScreenDimensions", Vector2.Zero);
-            m_Position = Entity.AddProperty<Vector2>("Position", Vector2.Zero);
+            // Retrieve position, rotation, and zoom.
+            m_Position = Entity.AddProperty<Vector3>("Position", Vector3.Zero);
             m_Rotation = Entity.AddProperty<float>("Rotation", 0.0f);
-            m_Zoom = Entity.AddProperty<float>("Zoom", 1.0f);
+            m_Zoom = Entity.AddProperty<float>("Zoom", 1);
 
-            m_Position.ValueChanged += new ValueChanged<Vector2>(PositionChanged);
-            m_Rotation.ValueChanged += new ValueChanged<float>(RotationChanged);
-            m_Zoom.ValueChanged += new ValueChanged<float>(ZoomChanged);
-
-            PositionChanged(Vector2.Zero, m_Position.Value);
-            RotationChanged(0, m_Rotation.Value);
-            ZoomChanged(0, m_Zoom.Value);
+            // For now, our transform does NOTHING.
+            m_View = Matrix.Identity;
+            m_Proj = Matrix.Identity;
             
+            // Whenever the entities "SetActive" event is triggered, make this camera active.
             Entity.AddEvent("SetActive", (o) => SetActiveCamera());
         }
 
-
+        /// <summary>
+        /// Takes the Pass variable (should be parsed from the XML if things are going well), and sets this
+        /// camera as the transformer for that pass.  Any objects on that pass will then be transformed by this
+        /// camera.
+        /// </summary>
         void SetActiveCamera()
         {
-            Broadphases.Graphics gr = XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics") as Broadphases.Graphics;
-            gr.SetTransformer(this, 1, 100);
-            
+            if (m_Pass != null)
+            {
+                Broadphases.Graphics gr = XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics") as Broadphases.Graphics;
+                gr.SetTransformer(this, m_Pass);
+            }
+            else
+            {/*Somethings wrong with this camera, show a warning*/}
         }
 
-        void PositionChanged(Vector2 oldValue, Vector2 newValue)
+        void PositionChanged(Vector3 oldValue, Vector3 newValue)
         {
-            m_TranslationMatrix = Matrix.CreateTranslation(-newValue.X, -newValue.Y, 0);
+            // Update the view/projection matrix for the new position values.
+            // Note: Initial implementation, just recalculate it.
+            // Possible Optimization: transform the matrix based on the difference between old and new.
         }
 
         void RotationChanged(float oldValue, float newValue)
         {
-            m_RotationMatrix = Matrix.CreateRotationZ(newValue);
+            // Update the view/projection matrix for the new rotation value.
+            // Note: Initial implementation, just recalculate it.
+            // Possible Optimization: transform the matrix based on the difference between old and new.
         }
 
         void ZoomChanged(float oldValue, float newValue)
         {
-            m_ScaleMatrix = Matrix.CreateScale(newValue, newValue, 1);
+            // Update the view/projection matrix for the new zoom.
+            // Note: Initial implementation, just recalculate it.
+            // Possible Optimization: transform the matrix based on the difference between old and new.
         }
 
-
+        /// <summary>
+        /// Pull various configuration options out of the XML
+        /// </summary>
+        /// <param name="data"></param>
         public override void Parse(System.Xml.XmlNode data)
         {
+            // Pull out the Pass variable, which determines what objects get influenced by this camera.
+            if (data.Attributes["pass"] != null)
+                m_Pass = data.Attributes["pass"].Value;
+            // If we're set as active from the beginning, make it so.
             if (data.Attributes["active"] != null)
                 if (bool.Parse(data.Attributes["active"].Value) == true)
                     SetActiveCamera();
         }
 
-        public Matrix GetTransformation(int Layer)
+        /// <summary>
+        /// Return the transformation to apply when rendering the layer this camera is on.
+        /// </summary>
+        /// <returns></returns>
+        public Matrix GetTransformation()
         {
-            Matrix screen = Matrix.CreateTranslation((m_ScreenDimensions.Value.X / 2), (m_ScreenDimensions.Value.Y / 2), 0);
-            Matrix tempScale = Matrix.CreateScale(1 / (float)Layer, 1 / (float)Layer, 1);
-            return m_TranslationMatrix * m_RotationMatrix * m_ScaleMatrix * tempScale * screen;
+            return m_View * m_Proj;
         }
 
-        public static Vector2 ScreenToWorld(Vector2 screenPos, int Layer)
+        /// <summary>
+        /// Transform a screen position to a world position at a given depth, using the pass defined by PassID
+        /// </summary>
+        /// <param name="screenPos"></param>
+        /// <param name="depth"></param>
+        /// <param name="PassID"></param>
+        /// <returns></returns>
+        public static Vector3 ScreenToWorld(Vector2 screenPos, float depth, String PassID = "Unsorted")
         {
-            return Vector2.Transform(screenPos, ScreenToWorldMatrix(Layer));
+            return new Vector3(screenPos, depth);
         }
 
-        public static Matrix ScreenToWorldMatrix(int Layer)
+        /// <summary>
+        /// Retrieve the matrix which transforms a point Vector3( ScreenPos, depth ); into the world using the
+        /// pass defined by PassID.
+        /// </summary>
+        /// <param name="PassID"></param>
+        /// <returns></returns>
+        public static Matrix ScreenToWorldMatrix(String PassID = "Unsorted")
         {
-            Matrix trans = Matrix.Invert(XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics").GetTransformer(Layer).GetTransformation(Layer));
-            return trans;
+            return Matrix.Identity;
         }
 
-        public static Vector2 WorldToScreen(Vector2 worldPos, int Layer)
+        /// <summary>
+        ///  Transform a world position to a screen position using the pass defined by PassID
+        /// </summary>
+        /// <param name="worldPos"></param>
+        /// <returns></returns>
+        public static Vector2 WorldToScreen(Vector3 worldPos, string PassID = "Unsorted")
         {
-            return Vector2.Transform(worldPos, WorldToScreenMatrix(Layer));
+            return worldPos.XY();
         }
 
-        public static Matrix WorldToScreenMatrix(int Layer)
+        /// <summary>
+        /// Get the matrix which transforms a given world position into screen coordinates through PassID;
+        /// </summary>
+        /// <returns></returns>
+        public static Matrix WorldToScreenMatrix(string PassID = "Unsorted")
         {
-            Matrix trans = XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics").GetTransformer(Layer).GetTransformation(Layer);
-            return trans;
+            return Matrix.Identity;
         }
     }
 }

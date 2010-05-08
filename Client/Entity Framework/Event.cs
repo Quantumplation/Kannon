@@ -56,7 +56,7 @@ namespace Kannon
     }
 
     /// <summary>
-    /// An event registered with an IEventContainer.  This is something that Can Happen.
+    /// An event registered with an IEventContainer.  This is something that Can Happen, either TO the entity or BY the entity.
     /// </summary>
     /// <param name="Data">Data passed along with the event.</param>
     public delegate void EntityEvent(object Data);
