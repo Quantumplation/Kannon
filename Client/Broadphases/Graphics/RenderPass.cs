@@ -52,8 +52,7 @@ namespace Kannon.Broadphases
 
         public void Render(SpriteBatch sb)
         {
-            sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, m_Transform.GetTransformation());
-            sb.GraphicsDevice.RenderState.DepthBufferEnable = true;
+            sb.Begin(/*m_Transform.GetTransform*/);
             foreach (Components.IRenderable rend in m_Renderables)
             {
                 rend.Render(sb);

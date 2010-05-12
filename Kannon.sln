@@ -1,18 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 10
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{50C6C179-20FB-44FB-BAB5-9678BBCE93CD}"
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{79E43731-DF1E-4658-A25E-B5E6E57C8389}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientContent", "ClientContent\ClientContent.contentproj", "{3F0EEB29-2FDD-438E-8056-3720626AC170}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{50C6C179-20FB-44FB-BAB5-9678BBCE93CD}.Debug|x86.ActiveCfg = Debug|x86
-		{50C6C179-20FB-44FB-BAB5-9678BBCE93CD}.Debug|x86.Build.0 = Debug|x86
-		{50C6C179-20FB-44FB-BAB5-9678BBCE93CD}.Release|x86.ActiveCfg = Release|x86
-		{50C6C179-20FB-44FB-BAB5-9678BBCE93CD}.Release|x86.Build.0 = Release|x86
+		{79E43731-DF1E-4658-A25E-B5E6E57C8389}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{79E43731-DF1E-4658-A25E-B5E6E57C8389}.Debug|x86.ActiveCfg = Debug|x86
+		{79E43731-DF1E-4658-A25E-B5E6E57C8389}.Debug|x86.Build.0 = Debug|x86
+		{79E43731-DF1E-4658-A25E-B5E6E57C8389}.Release|Any CPU.ActiveCfg = Release|x86
+		{79E43731-DF1E-4658-A25E-B5E6E57C8389}.Release|x86.ActiveCfg = Release|x86
+		{79E43731-DF1E-4658-A25E-B5E6E57C8389}.Release|x86.Build.0 = Release|x86
+		{3F0EEB29-2FDD-438E-8056-3720626AC170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F0EEB29-2FDD-438E-8056-3720626AC170}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3F0EEB29-2FDD-438E-8056-3720626AC170}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F0EEB29-2FDD-438E-8056-3720626AC170}.Release|x86.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

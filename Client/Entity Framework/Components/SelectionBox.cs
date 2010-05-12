@@ -90,7 +90,7 @@ namespace Kannon.Components
         {
             if (Selecting)
             {
-                sb.Draw(m_Image, Box, new Color(Color.DarkGreen, 150));
+                sb.Draw(m_Image, Box, new Color(new Vector4(Color.DarkGreen.ToVector3(), 150)));
             }
         }
 

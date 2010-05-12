@@ -4,22 +4,10 @@
     
     <Entity base="Camera">
       <Component type="Camera" name="Camera" mod="Modify" active="true"/>
-      <Component type="Sound" name="Sound" mod="Add">
-        <Sound file="i-see-you">
-          <Event event="SetActive" action="play"/>
-          <Event event="SetInactive" action="stop"/>
-        </Sound>
-      </Component>
     </Entity>
 
     <Entity base="Camera">
       <Component type="Camera" name="Camera" mod="Modify" active="false"/>
-      <Component type="Sound" name="Sound" mod="Add">
-        <Sound file="there-you-are">
-          <Event event="SetActive" action="play"/>
-          <Event event="SetInactive" action="stop"/>
-        </Sound>
-      </Component>
     </Entity>
 
     <Entity base="Cursor"/>
@@ -31,12 +19,6 @@
     </Entity>
 
     <Entity base="EntityE">
-      <Component type="Sound" name="sound" mod="Add">
-        <Sound file="hello-friend">
-          <Event event="Select" action="play"/>
-          <Event event="Deselect" action="stop"/>
-        </Sound>
-      </Component>
     </Entity>
 
     <Entity base="EntityC">
@@ -47,12 +29,6 @@
           <Z>0</Z>
         </Vector3>
       </Property>
-      <Component type="Sound" name="sound" mod="Add">
-        <Sound file="Gotcha">
-          <Event event="Select" action="play"/>
-          <Event event="Deselect" action="stop"/>
-        </Sound>
-      </Component>
     </Entity>
 
     <Entity base="EntityD">
