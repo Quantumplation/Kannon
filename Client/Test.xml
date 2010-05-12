@@ -22,7 +22,7 @@
     </Entity>
 
     <Entity base="EntityC">
-      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
         <Vector3>
           <X>400</X>
           <Y>300</Y>
@@ -32,7 +32,7 @@
     </Entity>
 
     <Entity base="EntityD">
-      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
         <Vector3>
           <X>200</X>
           <Y>150</Y>
@@ -42,7 +42,7 @@
     </Entity>
 
     <Entity base="EntityE">
-      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
         <Vector3>
           <X>0</X>
           <Y>0</Y>
@@ -65,7 +65,7 @@
   </Entity>
 
   <Entity name="EntityC">
-    <Property name ="Position" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+    <Property name ="Position" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
       <Vector3>
         <X>0</X>
         <Y>0</Y>
@@ -76,7 +76,7 @@
     <Component type="Selectable" name="Selectable" pass="Unsorted"/>
   </Entity>
   <Entity name="EntityD">
-    <Property name ="Position" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+    <Property name ="Position" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
       <Vector3>
         <X>0</X>
         <Y>0</Y>
@@ -90,7 +90,7 @@
     <Component type="Selectable" name="Selectable" pass="Unsorted"/>
   </Entity>
   <Entity name="EntityE">
-    <Property name ="Position" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+    <Property name ="Position" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
       <Vector3>
         <X>0</X>
         <Y>0</Y>
