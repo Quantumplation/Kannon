@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Kannon.EntitySystem.Components;
+using Kannon.EntitySystem;
 
 namespace Kannon.Broadphases
 {
@@ -12,18 +14,18 @@ namespace Kannon.Broadphases
     /// </summary>
     public class Generic : IBroadphase
     {
-        List<Components.IGenericComponent> m_Components;
+        List<IGenericComponent> m_Components;
 
         public Generic()
         {
-            ComponentFactory.RegisterCreatedCallback<Components.IGenericComponent>(this.RegisterComponent);
+            ComponentFactory.RegisterCreatedCallback<IGenericComponent>(this.RegisterComponent);
             XNAGame.Instance.UpdateEvent += Do;
-            m_Components = new List<Components.IGenericComponent>();
+            m_Components = new List<IGenericComponent>();
         }
 
         public void RegisterComponent(Component c)
         {
-            m_Components.Add(c as Components.IGenericComponent);
+            m_Components.Add(c as IGenericComponent);
             c.Entity.AddEvent(c.Name + ".Remove", new EntityEvent(this.RemoveComponent));
         }
 
@@ -34,7 +36,7 @@ namespace Kannon.Broadphases
 
         public void RemoveComponent(Component c)
         {
-            m_Components.Remove(c as Components.IGenericComponent);
+            m_Components.Remove(c as IGenericComponent);
         }
 
         public void Initialize()
@@ -58,7 +60,7 @@ namespace Kannon.Broadphases
 
         protected void Update(float elapsedTime)
         {
-            foreach (Components.IGenericComponent generic in m_Components)
+            foreach (IGenericComponent generic in m_Components)
                 generic.Update(elapsedTime);
         }
 

@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientContent", "ClientContent\ClientContent.contentproj", "{3F0EEB29-2FDD-438E-8056-3720626AC170}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kannon.EntitySystem", "EntitySystem\Kannon.EntitySystem.csproj", "{AE0DD128-C266-480F-91B6-B8F34A968F5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,6 +16,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{79E43731-DF1E-4658-A25E-B5E6E57C8389}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{79E43731-DF1E-4658-A25E-B5E6E57C8389}.Debug|Any CPU.Build.0 = Debug|x86
 		{79E43731-DF1E-4658-A25E-B5E6E57C8389}.Debug|x86.ActiveCfg = Debug|x86
 		{79E43731-DF1E-4658-A25E-B5E6E57C8389}.Debug|x86.Build.0 = Debug|x86
 		{79E43731-DF1E-4658-A25E-B5E6E57C8389}.Release|Any CPU.ActiveCfg = Release|x86
@@ -23,6 +26,13 @@ Global
 		{3F0EEB29-2FDD-438E-8056-3720626AC170}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{3F0EEB29-2FDD-438E-8056-3720626AC170}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{3F0EEB29-2FDD-438E-8056-3720626AC170}.Release|x86.ActiveCfg = Debug|Any CPU
+		{AE0DD128-C266-480F-91B6-B8F34A968F5D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{AE0DD128-C266-480F-91B6-B8F34A968F5D}.Debug|Any CPU.Build.0 = Debug|x86
+		{AE0DD128-C266-480F-91B6-B8F34A968F5D}.Debug|x86.ActiveCfg = Debug|x86
+		{AE0DD128-C266-480F-91B6-B8F34A968F5D}.Debug|x86.Build.0 = Debug|x86
+		{AE0DD128-C266-480F-91B6-B8F34A968F5D}.Release|Any CPU.ActiveCfg = Release|x86
+		{AE0DD128-C266-480F-91B6-B8F34A968F5D}.Release|x86.ActiveCfg = Release|x86
+		{AE0DD128-C266-480F-91B6-B8F34A968F5D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

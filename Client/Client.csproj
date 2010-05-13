@@ -99,22 +99,14 @@
     <Compile Include="Broadphases\IBroadphase.cs" />
     <Compile Include="Broadphases\Input.cs" />
     <Compile Include="Broadphases\Selection.cs" />
-    <Compile Include="Entity Framework\Component.cs" />
-    <Compile Include="Entity Framework\ComponentFactory.cs" />
-    <Compile Include="Entity Framework\Components\Camera.cs" />
-    <Compile Include="Entity Framework\Components\ContentComponents.cs" />
-    <Compile Include="Entity Framework\Components\Controller.cs" />
-    <Compile Include="Entity Framework\Components\Cursor.cs" />
-    <Compile Include="Entity Framework\Components\IGenericComponent.cs" />
-    <Compile Include="Entity Framework\Components\Selectable.cs" />
-    <Compile Include="Entity Framework\Components\SelectionBox.cs" />
-    <Compile Include="Entity Framework\Components\Sound.cs" />
-    <Compile Include="Entity Framework\Components\StaticRenderable.cs" />
-    <Compile Include="Entity Framework\Entity.cs" />
-    <Compile Include="Entity Framework\EntityFactory.cs" />
-    <Compile Include="Entity Framework\Event.cs" />
-    <Compile Include="Entity Framework\GlobalProperties.cs" />
-    <Compile Include="Entity Framework\Property.cs" />
+    <Compile Include="Components\Camera.cs" />
+    <Compile Include="Components\ContentComponents.cs" />
+    <Compile Include="Components\Controller.cs" />
+    <Compile Include="Components\Cursor.cs" />
+    <Compile Include="Components\Selectable.cs" />
+    <Compile Include="Components\SelectionBox.cs" />
+    <Compile Include="Components\Sound.cs" />
+    <Compile Include="Components\StaticRenderable.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="Misc\ITransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,8 +124,13 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ClientContent\ClientContent.contentproj">
-      <Name>ClientContent</Name>
+      <Name>ClientContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{3F0EEB29-2FDD-438E-8056-3720626AC170}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\EntitySystem\Kannon.EntitySystem.csproj">
+      <Project>{AE0DD128-C266-480F-91B6-B8F34A968F5D}</Project>
+      <Name>Kannon.EntitySystem</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
