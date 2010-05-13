@@ -52,7 +52,9 @@ namespace Kannon.Broadphases
 
         public void Render(SpriteBatch sb)
         {
-            sb.Begin(/*m_Transform.GetTransform*/);
+            // It sorts based on the depth value provided.  Back to front draws greatest depth to least depth.
+            // Front to back draws least to greatest.  It won't render right without this.
+            sb.Begin(SpriteSortMode.FrontToBack, null, null, null, null, null, m_Transform.GetTransformation());
             foreach (Components.IRenderable rend in m_Renderables)
             {
                 rend.Render(sb);

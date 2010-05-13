@@ -40,14 +40,22 @@ namespace Kannon.Components
             // Retrieve the Screen dimensions from global.
             m_ScreenDimensions = GlobalProperties.Instance.AddProperty<Vector2>("ScreenDimensions", Vector2.Zero);
             // Retrieve position, rotation, and zoom.
-            m_Position = Entity.AddProperty<Vector3>("Position", Vector3.Zero);
             m_Rotation = Entity.AddProperty<float>("Rotation", 0.0f);
-            m_Zoom = Entity.AddProperty<float>("Zoom", 1);
+            m_Zoom = Entity.AddProperty<float>("Zoom", 10);
+            m_Position = Entity.AddProperty<Vector3>("Position", Vector3.UnitZ * m_Zoom.Value);
 
             // For now, our transform does NOTHING.
             m_View = Matrix.Identity;
             m_Proj = Matrix.Identity;
-            
+
+            m_Position.ValueChanged += new ValueChanged<Vector3>(PositionChanged);
+            m_Zoom.ValueChanged += new ValueChanged<float>(ZoomChanged);
+            m_Rotation.ValueChanged += new ValueChanged<float>(RotationChanged);
+
+            RecalculateView(m_Position.Value);
+
+            m_Proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(40.0f), 1, 1.0f, 1000.0f) * Matrix.CreateTranslation(new Vector3(m_ScreenDimensions.Value.X/2, m_ScreenDimensions.Value.Y/2, 0.0f));
+
             // Whenever the entities "SetActive" event is triggered, make this camera active.
             Entity.AddEvent("SetActive", (o) => SetActiveCamera());
         }
@@ -70,6 +78,7 @@ namespace Kannon.Components
 
         void PositionChanged(Vector3 oldValue, Vector3 newValue)
         {
+            RecalculateView(newValue);
             // Update the view/projection matrix for the new position values.
             // Note: Initial implementation, just recalculate it.
             // Possible Optimization: transform the matrix based on the difference between old and new.
@@ -77,6 +86,7 @@ namespace Kannon.Components
 
         void RotationChanged(float oldValue, float newValue)
         {
+            RecalculateView(m_Position.Value);
             // Update the view/projection matrix for the new rotation value.
             // Note: Initial implementation, just recalculate it.
             // Possible Optimization: transform the matrix based on the difference between old and new.
@@ -84,9 +94,16 @@ namespace Kannon.Components
 
         void ZoomChanged(float oldValue, float newValue)
         {
+            // TODO: Refactor min/max zoom to here.
+            m_Position.Value = new Vector3(m_Position.Value.XY(), newValue);
             // Update the view/projection matrix for the new zoom.
             // Note: Initial implementation, just recalculate it.
             // Possible Optimization: transform the matrix based on the difference between old and new.
+        }
+
+        void RecalculateView(Vector3 Position)
+        {
+            m_View = Matrix.CreateLookAt(new Vector3(Position.X, Position.Y, Position.Z), new Vector3(Position.X, Position.Y, Position.Z - 1), Vector3.UnitY);
         }
 
         /// <summary>

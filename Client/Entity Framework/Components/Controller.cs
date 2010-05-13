@@ -64,13 +64,21 @@ namespace Kannon.Components
             if (m_InputObj.IsDown(Keys.Right))
                 m_Position.Value += Vector3.UnitX * Speed * elapsedTime;
             if (m_InputObj.IsDown(Keys.PageUp) && Entity.HasProperty<float>("Zoom"))
-                Entity.GetProperty<float>("Zoom").Value -= .01f * Speed * elapsedTime;
+            {
+                if (Entity.GetProperty<float>("Zoom").Value - .01f * Speed * elapsedTime <= GlobalProperties.Instance.GetProperty<float>("MaxZoom").Value)
+                    Entity.GetProperty<float>("Zoom").Value = GlobalProperties.Instance.GetProperty<float>("MaxZoom").Value;
+                else
+                    Entity.GetProperty<float>("Zoom").Value -= .01f * Speed * elapsedTime;
+            }
             if (m_InputObj.IsDown(Keys.PageDown) && Entity.HasProperty<float>("Zoom"))
-                Entity.GetProperty<float>("Zoom").Value += .01f * Speed * elapsedTime;
-            if (Entity.GetProperty<float>("Zoom").Value <= GlobalProperties.Instance.GetProperty<float>("MaxZoom").Value)
-                Entity.GetProperty<float>("Zoom").Value = GlobalProperties.Instance.GetProperty<float>("MaxZoom").Value;
+            {
+                if (Entity.GetProperty<float>("Zoom").Value + .01f * Speed * elapsedTime >= GlobalProperties.Instance.GetProperty<float>("MinZoom").Value)
+                    Entity.GetProperty<float>("Zoom").Value = GlobalProperties.Instance.GetProperty<float>("MinZoom").Value;
+                else
+                    Entity.GetProperty<float>("Zoom").Value += .01f * Speed * elapsedTime;
+            }
             if (m_InputObj.IsDown(Keys.R))
-                m_Position.Value = new Vector3(0, 0, m_Position.Value.Z);
+                m_Position.Value = new Vector3(-500, -500, m_Position.Value.Z);
                 
         }
     }

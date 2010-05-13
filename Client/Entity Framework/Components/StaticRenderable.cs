@@ -88,6 +88,10 @@ namespace Kannon.Components
             Color col = Color.White;
             if (Entity.GetProperty<bool>("Selected") != null && Entity.GetProperty<bool>("Selected").Value)
                 col = Color.Black;
+            // Render the texture, at the XY position, the whole texture, with the entities rotation, offset by the origin,
+            // with a set scale, No special effects, and a depth.  Note: Depth is negated to establish this convention:
+            // 0 is the default depth.  Anything negative is coming closer to the camera, anything positive is going deeper
+            // into the screen.
             sb.Draw(m_Texture, m_Position.Value.XY(), null, col, m_Rotation.Value, m_Origin.Value, m_Scale.Value, SpriteEffects.None, m_Position.Value.Z);
         }
 

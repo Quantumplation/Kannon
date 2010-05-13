@@ -15,18 +15,12 @@
     <Entity base="EntityC">
     </Entity>
 
-    <Entity base="EntityD">
-    </Entity>
-
-    <Entity base="EntityE">
-    </Entity>
-
     <Entity base="EntityC">
       <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
         <Vector3>
-          <X>400</X>
-          <Y>300</Y>
-          <Z>0</Z>
+          <X>50</X>
+          <Y>50</Y>
+          <Z>-3</Z>
         </Vector3>
       </Property>
     </Entity>
@@ -34,9 +28,49 @@
     <Entity base="EntityD">
       <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
         <Vector3>
-          <X>200</X>
-          <Y>150</Y>
+          <X>0</X>
+          <Y>50</Y>
+          <Z>-2</Z>
+        </Vector3>
+      </Property>
+    </Entity>
+
+    <Entity base="EntityE">
+      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+        <Vector3>
+          <X>-50</X>
+          <Y>50</Y>
+          <Z>-1</Z>
+        </Vector3>
+      </Property>
+    </Entity>
+
+    <Entity base="EntityE">
+      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+        <Vector3>
+          <X>-50</X>
+          <Y>0</Y>
           <Z>0</Z>
+        </Vector3>
+      </Property>
+    </Entity>
+
+    <Entity base="EntityE">
+      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+        <Vector3>
+          <X>-50</X>
+          <Y>-50</Y>
+          <Z>1</Z>
+        </Vector3>
+      </Property>
+    </Entity>
+
+    <Entity base="EntityE">
+      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+        <Vector3>
+          <X>-500</X>
+          <Y>-500</Y>
+          <Z>2</Z>
         </Vector3>
       </Property>
     </Entity>
@@ -45,8 +79,22 @@
       <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
         <Vector3>
           <X>0</X>
-          <Y>0</Y>
-          <Z>0</Z>
+          <Y>-50</Y>
+          <Z>-90</Z>
+        </Vector3>
+      </Property>
+      <Component type="StaticRenderable" name="ComponentA" file="Starfield" mod="modify"/>
+      <Property name="Scale" mod="add" type="System.Single">
+        <float>100</float>
+      </Property>
+    </Entity>
+
+    <Entity base="EntityE">
+      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+        <Vector3>
+          <X>50</X>
+          <Y>-50</Y>
+          <Z>3</Z>
         </Vector3>
       </Property>
     </Entity>
@@ -72,7 +120,7 @@
         <Z>0</Z>
       </Vector3>
     </Property>
-    <Component type="StaticRenderable" name="ComponentA" file="ERROR" pass="UI"/>
+    <Component type="StaticRenderable" name="ComponentA" file="ERROR" pass="Unsorted"/>
     <Component type="Selectable" name="Selectable" pass="Unsorted"/>
   </Entity>
   <Entity name="EntityD">

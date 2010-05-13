@@ -23,6 +23,9 @@ namespace Kannon.Broadphases
             ComponentFactory.RegisterCreatedCallback<Components.IRenderable>(this.RegisterComponent);
             m_SpriteBatch = new SpriteBatch(gd);
             m_GraphicsDevice = gd;
+            RasterizerState rs = new RasterizerState();
+            rs.CullMode = CullMode.None;
+            m_GraphicsDevice.RasterizerState = rs;
 
             m_RenderPasses = new Dictionary<String,RenderPass>();
             m_RenderPasses.Add("Unsorted", new RenderPass());

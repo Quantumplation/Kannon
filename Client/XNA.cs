@@ -108,7 +108,8 @@ namespace Kannon
         protected override void Initialize()
         {
             GlobalProperties.Instance.AddProperty<Vector2>("ScreenDimensions", new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height));
-            GlobalProperties.Instance.AddProperty<float>("MaxZoom", -10.0f);
+            GlobalProperties.Instance.AddProperty<float>("MaxZoom", 10.0f);
+            GlobalProperties.Instance.AddProperty<float>("MinZoom", 100.0f);
 
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.StaticRenderable));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Sound));
@@ -195,14 +196,14 @@ namespace Kannon
             else
                 flagPressed = false;
 
-            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.PageUp))
-            {
-                currentSelected.GetProperty<float>("Zoom").Value -= 0.01f;
-            }
-            if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.PageDown))
-            {
-                currentSelected.GetProperty<float>("Zoom").Value += 0.01f;
-            }
+            //if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.PageUp))
+            //{
+            //    currentSelected.GetProperty<float>("Zoom").Value -= 0.01f;
+            //}
+            //if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.PageDown))
+            //{
+            //    currentSelected.GetProperty<float>("Zoom").Value += 0.01f;
+            //}
 
             if( UpdateEvent != null )
                 UpdateEvent((float)gameTime.ElapsedGameTime.TotalMilliseconds);
