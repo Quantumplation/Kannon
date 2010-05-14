@@ -5,6 +5,8 @@ using System.Text;
 
 using Microsoft.Xna.Framework.Audio;
 using System.Xml;
+using Kannon.EntitySystem;
+using Kannon.EntitySystem.Components;
 
 namespace Kannon.Components
 {

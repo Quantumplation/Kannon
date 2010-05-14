@@ -5,6 +5,8 @@ using System.Text;
 
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Kannon.EntitySystem;
+using Kannon.EntitySystem.Components;
 
 namespace Kannon.Components
 {

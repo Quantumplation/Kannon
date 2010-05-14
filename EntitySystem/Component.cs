@@ -5,7 +5,7 @@ using System.Text;
 
 using System.Xml;
 
-namespace Kannon
+namespace Kannon.EntitySystem
 {
     /// <summary>
     /// IComponentContainers store a multitude of components.

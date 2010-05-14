@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Kannon.EntitySystem;
+using Kannon.EntitySystem.Components;
 
 namespace Kannon.Components
 {

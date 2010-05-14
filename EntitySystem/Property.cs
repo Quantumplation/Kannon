@@ -7,9 +7,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Kannon
+namespace Kannon.EntitySystem
 {
-
     /// <summary>
     /// Provides facilities for storing properties.
     /// </summary>

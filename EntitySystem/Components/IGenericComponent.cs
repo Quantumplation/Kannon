@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kannon.Components
+namespace Kannon.EntitySystem.Components
 {
     /// <summary>
     /// Represents a component which needs to be updated each frame.

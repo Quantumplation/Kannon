@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Xml;
+using Kannon.EntitySystem;
 
 namespace Kannon
 {

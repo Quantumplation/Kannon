@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kannon
+namespace Kannon.EntitySystem
 {
     /// <summary>
     /// Component Creation delegate.  Used in order to CREATE a Component.

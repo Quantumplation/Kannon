@@ -5,6 +5,7 @@ using System.Text;
 
 using Kannon.Components;
 using Microsoft.Xna.Framework;
+using Kannon.EntitySystem;
 
 namespace Kannon.Broadphases
 {

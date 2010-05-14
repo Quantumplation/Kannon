@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kannon
+namespace Kannon.EntitySystem
 {
     /// <summary>
     /// Representation of something in the game world.

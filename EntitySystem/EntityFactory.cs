@@ -5,7 +5,7 @@ using System.Text;
 
 using System.Xml;
 
-namespace Kannon
+namespace Kannon.EntitySystem
 {
     /* NOTE BIG NOTE NOTE NOTE:
      * 
