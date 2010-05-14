@@ -85,7 +85,7 @@
       </Property>
       <Component type="StaticRenderable" name="ComponentA" file="Starfield" mod="modify"/>
       <Property name="Scale" mod="add" type="System.Single">
-        <float>100</float>
+        <float>50</float>
       </Property>
     </Entity>
 
