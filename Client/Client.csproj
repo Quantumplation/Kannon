@@ -108,7 +108,6 @@
     <Compile Include="Components\Sound.cs" />
     <Compile Include="Components\StaticRenderable.cs" />
     <Compile Include="Entry.cs" />
-    <Compile Include="FooBar.cs" />
     <Compile Include="Misc\ITransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XNA.cs" />
@@ -132,6 +131,10 @@
     <ProjectReference Include="..\EntitySystem\Kannon.EntitySystem.csproj">
       <Project>{AE0DD128-C266-480F-91B6-B8F34A968F5D}</Project>
       <Name>Kannon.EntitySystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GraphicsTabletLibrary\VBTablet.Net 2.0.vbproj">
+      <Project>{DD68142C-B1B5-4A07-8989-50F9E9580B26}</Project>
+      <Name>VBTablet.Net 2.0</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
