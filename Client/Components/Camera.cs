@@ -43,10 +43,9 @@ namespace Kannon.Components
             m_ScreenDimensions = GlobalProperties.Instance.AddProperty<Vector2>("ScreenDimensions", Vector2.Zero);
             // Retrieve position, rotation, and zoom.
             m_Rotation = Entity.AddProperty<float>("Rotation", 0.0f);
-            m_Zoom = Entity.AddProperty<float>("Zoom", 10);
+            m_Zoom = Entity.AddProperty<float>("Zoom", 1);
             m_Position = Entity.AddProperty<Vector3>("Position", Vector3.UnitZ * m_Zoom.Value);
-
-            // For now, our transform does NOTHING.
+            
             m_View = Matrix.Identity;
             m_Proj = Matrix.Identity;
 
@@ -105,7 +104,7 @@ namespace Kannon.Components
 
         void RecalculateView(Vector3 Position)
         {
-            m_View = Matrix.CreateLookAt(new Vector3(Position.X, Position.Y, Position.Z), new Vector3(Position.X, Position.Y, Position.Z - 1), Vector3.UnitY);
+            m_View = Matrix.CreateLookAt(new Vector3(Position.X, Position.Y, Position.Z), new Vector3(Position.X, Position.Y, Position.Z - 1), Vector3.UnitY) * Matrix.CreateRotationZ(-m_Rotation.Value);
         }
 
         /// <summary>

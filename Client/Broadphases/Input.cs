@@ -5,6 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework.Input;
 using Kannon.EntitySystem;
+using Microsoft.Xna.Framework;
 
 namespace Kannon.Broadphases
 {
@@ -102,6 +103,22 @@ namespace Kannon.Broadphases
         public Boolean IsDown(Int32 mouseButton)
         {
             return m_Mouse.mouseButtons[mouseButton];
+        }
+
+        public float WheelPosition
+        {
+            get
+            {
+                return m_Mouse.wheelPosition;
+            }
+        }
+
+        public Vector2 MousePosition
+        {
+            get
+            {
+                return new Vector2(m_Mouse.mouseX, m_Mouse.mouseY);
+            }
         }
 
         /// <summary>

@@ -109,13 +109,14 @@ namespace Kannon
         protected override void Initialize()
         {
             GlobalProperties.Instance.AddProperty<Vector2>("ScreenDimensions", new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height));
-            GlobalProperties.Instance.AddProperty<float>("MaxZoom", 10.0f);
-            GlobalProperties.Instance.AddProperty<float>("MinZoom", 100.0f);
+            GlobalProperties.Instance.AddProperty<float>("MaxZoom", 1.01f);
+            GlobalProperties.Instance.AddProperty<float>("MinZoom", 256.0f);
 
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.StaticRenderable));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Sound));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Camera));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.KeyboardController));
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.StandardCameraController));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Cursor));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.SelectionBox));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Selectable));
@@ -145,13 +146,6 @@ namespace Kannon
         {
             if( LoadEvent != null )
                 LoadEvent();
-        }
-
-        public void Blah(object blah)
-        {
-        }
-        public void Blah2(object blah)
-        {
         }
 
         /// <summary>

@@ -75,18 +75,8 @@
       </Property>
     </Entity>
 
-    <Entity base="EntityE">
-      <Property name ="Position" mod="modify" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
-        <Vector3>
-          <X>0</X>
-          <Y>-50</Y>
-          <Z>-90</Z>
-        </Vector3>
-      </Property>
-      <Component type="StaticRenderable" name="ComponentA" file="Starfield" mod="modify"/>
-      <Property name="Scale" mod="add" type="System.Single">
-        <float>50</float>
-      </Property>
+    <Entity base="Background">
+      <Component type="StaticRenderable" name="backgroundImage" file="Starfield" mod="modify"/>
     </Entity>
 
     <Entity base="EntityE">
@@ -103,13 +93,30 @@
   
   <Entity name="Camera">
     <Component type="Camera" name="Camera" pass="Unsorted"/>
-    <Component type="KeyboardController" name="Keyboard"/>
+    <Component type="StandardCameraController" name="Keyboard" Keyboard="2.0" EdgeScroll="200.0"/>
   </Entity>
 
   <Entity name="Cursor">
     <Component type="StaticRenderable" name="cursorGraphic" pass="UI"/>
     <Component type="Cursor" name="cursorComponent"/>
     <Component type="SelectionBox" name="selectionBox"/>
+    <Property name="Scale" type="System.Single">
+      <float>.1</float>
+    </Property>
+  </Entity>
+
+  <Entity name="Background">
+    <Component type="StaticRenderable" name="backgroundImage" Pass="Unsorted"/>
+    <Property name="Scale" type="System.Single">
+      <float>50</float>
+    </Property>
+    <Property name ="Position" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+      <Vector3>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>-90</Z>
+      </Vector3>
+    </Property>
   </Entity>
 
   <Entity name="EntityC">
@@ -137,6 +144,7 @@
     <Component type="StaticRenderable" name="ComponentA"/>
     <Component type="Selectable" name="Selectable" pass="Unsorted"/>
   </Entity>
+  
   <Entity name="EntityE">
     <Property name ="Position" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
       <Vector3>
