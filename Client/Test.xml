@@ -9,8 +9,8 @@
     <Entity base="Camera">
       <Component type="Camera" name="Camera" mod="Modify" active="false"/>
     </Entity>
-
-    <Entity base="Cursor"/>
+	
+	  <Entity base="TabletCursor"/>
 
     <Entity base="EntityC">
     </Entity>
@@ -96,9 +96,18 @@
     <Component type="StandardCameraController" name="Keyboard" Keyboard="2.0" EdgeScroll="200.0"/>
   </Entity>
 
-  <Entity name="Cursor">
+  <Entity name="TabletCursor">
     <Component type="StaticRenderable" name="cursorGraphic" pass="UI"/>
-    <Component type="Cursor" name="cursorComponent"/>
+    <Component type="TabletCursor" name="cursorComponent"/>
+    <Component type="SelectionBox" name="selectionBox"/>
+    <Property name="Scale" type="System.Single">
+      <float>.1</float>
+    </Property>
+  </Entity>
+  
+  <Entity name="MouseCursor">
+    <Component type="StaticRenderable" name="cursorGraphic" pass="UI"/>
+    <Component type="MouseCursor" name="cursorComponent"/>
     <Component type="SelectionBox" name="selectionBox"/>
     <Property name="Scale" type="System.Single">
       <float>.1</float>

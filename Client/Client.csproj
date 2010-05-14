@@ -102,11 +102,12 @@
     <Compile Include="Components\Camera.cs" />
     <Compile Include="Components\ContentComponents.cs" />
     <Compile Include="Components\Controller.cs" />
-    <Compile Include="Components\Cursor.cs" />
+    <Compile Include="Components\MouseCursor.cs" />
     <Compile Include="Components\Selectable.cs" />
     <Compile Include="Components\SelectionBox.cs" />
     <Compile Include="Components\Sound.cs" />
     <Compile Include="Components\StaticRenderable.cs" />
+    <Compile Include="Components\TabletCursor.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="Misc\ITransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

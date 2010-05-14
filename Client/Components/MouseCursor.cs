@@ -14,17 +14,17 @@ namespace Kannon.Components
     /// Software mouse allows complex cursor behaviors, such as rotating when clicked, 
     /// animating based on context, etc, but might run slower than a Hardware mouse.
     /// </summary>
-    class Cursor : Component
+    class MouseCursor : Component
     {
         Property<Vector3> m_Position;
 
         [ComponentCreator]
         public static Component Create(Entity ent, String name)
         {
-            return new Cursor(ent, name);
+            return new MouseCursor(ent, name);
         }
 
-        public Cursor(Entity ent, String name) : base(ent, name)
+        public MouseCursor(Entity ent, String name) : base(ent, name)
         {
             m_Position = Entity.AddProperty<Vector3>("Position", Vector3.Zero);
             Broadphases.Input inp = XNAGame.Instance.GetBroadphase<Broadphases.Input>("Input");

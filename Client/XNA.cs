@@ -117,9 +117,10 @@ namespace Kannon
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Camera));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.KeyboardController));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.StandardCameraController));
-            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Cursor));
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.MouseCursor));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.SelectionBox));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Selectable));
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.TabletCursor));
 
             m_Broadphases = new Dictionary<string, IBroadphase>();
             m_Broadphases.Add("Generic", new Broadphases.Generic());
@@ -144,6 +145,10 @@ namespace Kannon
         /// </summary>
         protected override void LoadContent()
         {
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferWidth = 768;
+            graphics.ApplyChanges();
+
             if( LoadEvent != null )
                 LoadEvent();
         }
@@ -158,13 +163,13 @@ namespace Kannon
                 UnloadEvent();
         }
 
+        bool flagPlaying = false;
+        bool flagPressed = false;
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        bool flagPlaying = false;
-        bool flagPressed = false;
         protected override void Update(GameTime gameTime)
         {
             if (GetBroadphase<Broadphases.Input>("Input").IsDown(Keys.Space))
