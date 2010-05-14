@@ -108,6 +108,7 @@
     <Compile Include="Components\Sound.cs" />
     <Compile Include="Components\StaticRenderable.cs" />
     <Compile Include="Entry.cs" />
+    <Compile Include="FooBar.cs" />
     <Compile Include="Misc\ITransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XNA.cs" />
