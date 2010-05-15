@@ -10,7 +10,7 @@
       <Component type="Camera" name="Camera" mod="Modify" active="false"/>
     </Entity>
 	
-	  <Entity base="TabletCursor"/>
+	<Entity base="TabletCursor"/>
 
     <Entity base="EntityC">
     </Entity>
