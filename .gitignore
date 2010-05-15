@@ -4,3 +4,4 @@ bin/
 *.csproj.user
 *.contentproj.user
 *.csproj.Debug.cachefile
+*.lnk
