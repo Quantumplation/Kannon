@@ -6,10 +6,6 @@
       <Component type="Camera" name="Camera" mod="Modify" active="true"/>
     </Entity>
 
-    <Entity base="Camera">
-      <Component type="Camera" name="Camera" mod="Modify" active="false"/>
-    </Entity>
-
     <Entity base="EntityC">
     </Entity>
 

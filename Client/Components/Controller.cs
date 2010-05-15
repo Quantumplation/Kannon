@@ -284,6 +284,12 @@ namespace Kannon.Components
     {
         private IGenericComponent behaviour;
 
+        public bool IsActive
+        {
+            get;
+            set;
+        }
+
         [ComponentCreator]
         public static Component Create(Entity ent, String name)
         {
@@ -293,7 +299,9 @@ namespace Kannon.Components
         public ScrollController(Entity ent, String name)
             : base(ent, name)
         {
-
+            IsActive = true;
+            Entity.AddEvent("SetActive", (o) => this.IsActive = true);
+            Entity.AddEvent("SetInactive", (o) => this.IsActive = false);
         }
 
         public override void Parse(XmlNode data)
@@ -319,7 +327,7 @@ namespace Kannon.Components
                     throw new NotImplementedException("Keyboard");
                     break;
                 case "tablet":
-                    try { return new TabletBehaviour(); }
+                    try { return new TabletBehaviour(Entity.AddProperty<Vector3>("Position", Vector3.Zero)); }
                     catch (Exception e) { return CreateBehaviour("mouse"); }
                 case "multitouch":
                     //todo: implement a multi touch scroll controller
@@ -332,6 +340,9 @@ namespace Kannon.Components
 
         public void Update(float elapsedTime)
         {
+            if (!IsActive)
+                return;
+
             behaviour.Update(elapsedTime);
         }
 
@@ -344,8 +355,12 @@ namespace Kannon.Components
             private int queueLength = -1;
             private Queue<TabletDataPacket> positions = new Queue<TabletDataPacket>();
 
-            public TabletBehaviour()
+            private Property<Vector3> position;
+
+            public TabletBehaviour(Property<Vector3> position)
             {
+                this.position = position;
+
                 bool isDigitizing = true;
                 string selectedContext = "FirstContext";
 
@@ -423,7 +438,16 @@ namespace Kannon.Components
 
             public void Update(float elapsedTime)
             {
-                //todo: tablet movement
+                if (positions.Count > 1)
+                {
+                    TabletDataPacket p1 = positions.Skip(positions.Count - 2).First();
+                    TabletDataPacket p2 = positions.Skip(positions.Count - 1).First();
+
+                    float scale = 10;
+                    Vector2 delta = new Vector2(tablet.TwipsToFloatRangeX(p2.X - p1.X) * XNAGame.Instance.GraphicsDevice.Viewport.Width, tablet.TwipsToFloatRangeY(p2.Y - p1.Y) * XNAGame.Instance.GraphicsDevice.Viewport.Height);
+
+                    position.Value += new Vector3(delta * new Vector2(-scale, scale), 0);
+                }
             }
 
             private struct TabletDataPacket
