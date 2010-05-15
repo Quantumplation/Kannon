@@ -115,12 +115,10 @@ namespace Kannon
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.StaticRenderable));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Sound));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Camera));
-            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.KeyboardController));
-            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.StandardCameraController));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.MouseCursor));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.SelectionBox));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Selectable));
-            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.TabletCursor));
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.ScrollController));
 
             m_Broadphases = new Dictionary<string, IBroadphase>();
             m_Broadphases.Add("Generic", new Broadphases.Generic());

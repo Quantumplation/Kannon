@@ -9,8 +9,6 @@
     <Entity base="Camera">
       <Component type="Camera" name="Camera" mod="Modify" active="false"/>
     </Entity>
-	
-	<Entity base="TabletCursor"/>
 
     <Entity base="EntityC">
     </Entity>
@@ -93,7 +91,7 @@
   
   <Entity name="Camera">
     <Component type="Camera" name="Camera" pass="Unsorted"/>
-    <Component type="StandardCameraController" name="Keyboard" Keyboard="2.0" EdgeScroll="200.0"/>
+    <Component type="ScrollController" name="cameraScrollController" mod="Modify" Device="tablet"/>
   </Entity>
 
   <Entity name="TabletCursor">
