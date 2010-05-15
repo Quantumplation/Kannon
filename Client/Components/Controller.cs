@@ -395,6 +395,8 @@ namespace Kannon.Components
                 ref int PacketTime
             )
             {
+                XNAGame.Instance.Window.Title = NormalPressure.ToString();
+
                 if (positions.Count == 0)
                     timer.Start();
 
@@ -443,10 +445,13 @@ namespace Kannon.Components
                     TabletDataPacket p1 = positions.Skip(positions.Count - 2).First();
                     TabletDataPacket p2 = positions.Skip(positions.Count - 1).First();
 
-                    float scale = 10;
-                    Vector2 delta = new Vector2(tablet.TwipsToFloatRangeX(p2.X - p1.X) * XNAGame.Instance.GraphicsDevice.Viewport.Width, tablet.TwipsToFloatRangeY(p2.Y - p1.Y) * XNAGame.Instance.GraphicsDevice.Viewport.Height);
+                    if (p1.NormalPressure > 0 || p2.NormalPressure > 0)
+                    {
+                        float scale = 10;
+                        Vector2 delta = new Vector2(tablet.TwipsToFloatRangeX(p2.X - p1.X) * XNAGame.Instance.GraphicsDevice.Viewport.Width, tablet.TwipsToFloatRangeY(p2.Y - p1.Y) * XNAGame.Instance.GraphicsDevice.Viewport.Height);
 
-                    position.Value += new Vector3(delta * new Vector2(-scale, scale), 0);
+                        position.Value += new Vector3(delta * new Vector2(-scale, scale), 0);
+                    }
                 }
             }
 
