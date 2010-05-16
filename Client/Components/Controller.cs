@@ -328,7 +328,12 @@ namespace Kannon.Components
                     break;
                 case "tablet":
                     try { return new TabletBehaviour(Entity.AddProperty<Vector3>("Position", Vector3.Zero)); }
-                    catch (Exception e) { return CreateBehaviour("mouse"); }
+                    catch (Exception e)
+                    {
+                        Trace.TraceWarning("Error creating tablet controller, falling back on mouse");
+                        Trace.TraceWarning(e.ToString());
+                        return CreateBehaviour("mouse");
+                    }
                 case "multitouch":
                     //todo: implement a multi touch scroll controller
                     try { throw new NotImplementedException(); }
@@ -356,6 +361,7 @@ namespace Kannon.Components
             private Queue<TabletDataPacket> positions = new Queue<TabletDataPacket>();
 
             private Property<Vector3> position;
+            private Vector2 velocity = Vector2.Zero;
 
             public TabletBehaviour(Property<Vector3> position)
             {
@@ -395,8 +401,6 @@ namespace Kannon.Components
                 ref int PacketTime
             )
             {
-                XNAGame.Instance.Window.Title = NormalPressure.ToString();
-
                 if (positions.Count == 0)
                     timer.Start();
 
@@ -449,10 +453,21 @@ namespace Kannon.Components
                     {
                         float scale = 10;
                         Vector2 delta = new Vector2(tablet.TwipsToFloatRangeX(p2.X - p1.X) * XNAGame.Instance.GraphicsDevice.Viewport.Width, tablet.TwipsToFloatRangeY(p2.Y - p1.Y) * XNAGame.Instance.GraphicsDevice.Viewport.Height);
+                        delta = delta * new Vector2(-scale, scale);
 
-                        position.Value += new Vector3(delta * new Vector2(-scale, scale), 0);
+                        if (float.IsNaN(delta.X) || float.IsNaN(delta.Y))
+                            return;
+                        if (float.IsNaN(elapsedTime))
+                            return;
+
+                        position.Value += new Vector3(delta, 0);
+
+                        velocity = velocity * 0.5f + delta * 0.5f;
                     }
                 }
+
+                velocity -= velocity * elapsedTime / 1000f;
+                position.Value += new Vector3(velocity, 0);
             }
 
             private struct TabletDataPacket
