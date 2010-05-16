@@ -103,6 +103,7 @@
     <Compile Include="Components\ContentComponents.cs" />
     <Compile Include="Components\Controller.cs" />
     <Compile Include="Components\Cursor.cs" />
+    <Compile Include="Components\Follower.cs" />
     <Compile Include="Components\Selectable.cs" />
     <Compile Include="Components\SelectionBox.cs" />
     <Compile Include="Components\Sound.cs" />

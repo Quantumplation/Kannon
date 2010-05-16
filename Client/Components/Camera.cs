@@ -44,7 +44,7 @@ namespace Kannon.Components
             m_ScreenDimensions = GlobalProperties.Instance.AddProperty<Vector2>("ScreenDimensions", Vector2.Zero);
             // Retrieve position, rotation, and zoom.
             m_Rotation = Entity.AddProperty<float>("Rotation", 0.0f);
-            m_Zoom = Entity.AddProperty<float>("Zoom", 1);
+            m_Zoom = Entity.AddProperty<float>("Zoom", GlobalProperties.Instance.AddProperty<float>("ZoomStart", 1.0f).Value);
             m_Position = Entity.AddProperty<Vector3>("Position", Vector3.UnitZ * m_Zoom.Value);
             
             m_View = Matrix.Identity;
@@ -56,7 +56,7 @@ namespace Kannon.Components
 
             RecalculateView(m_Position.Value);
 
-            m_Proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(40.0f), 1, m_ScreenDimensions.Value.X / m_ScreenDimensions.Value.Y, 1000.0f);
+            m_Proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(40.0f), 1.0f, 0.1f, 1000.0f);
             m_ScreenAdjust = Matrix.CreateTranslation(new Vector3(m_ScreenDimensions.Value.X / 2, m_ScreenDimensions.Value.Y / 2, 0.0f));
 
             // Whenever the entities "SetActive" event is triggered, make this camera active.
@@ -172,7 +172,7 @@ namespace Kannon.Components
             ITransformer trans = XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics").GetTransformer(PassID);
             Vector3 near = vp.Unproject(new Vector3(screenPos, 0), trans.Projection, trans.View, Matrix.Identity);
             Vector3 far = vp.Unproject(new Vector3(screenPos, 1), trans.Projection, trans.View, Matrix.Identity);
-
+            
             // find the direction vector that goes from the nearPoint to the farPoint
             // and psuedo-normalize it....
             Vector3 direction = (far - near);
@@ -186,6 +186,8 @@ namespace Kannon.Components
             direction.Y *= -vp.Height/2;
             // Now, take the camera position, and "go out" from there to the specified depth.
             Vector3 result = trans.Position + (direction * (trans.Position.Z - depth));
+            // Sometimes we get small floating point errors, so just go ahead and set the depth equal to what was passed in.
+            result.Z = depth;
             return result;
         }
 

@@ -67,17 +67,13 @@ namespace Kannon.Components
                 m_Position.Value += Vector3.UnitX * Speed * elapsedTime;
             if (m_InputObj.IsDown(Keys.PageUp) && Entity.HasProperty<float>("Zoom"))
             {
-                if (Entity.GetProperty<float>("Zoom").Value - .01f * Speed * elapsedTime <= GlobalProperties.Instance.GetProperty<float>("MaxZoom").Value)
-                    Entity.GetProperty<float>("Zoom").Value = GlobalProperties.Instance.GetProperty<float>("MaxZoom").Value;
-                else
-                    Entity.GetProperty<float>("Zoom").Value -= .01f * Speed * elapsedTime;
+                Property<float> prop = Entity.GetProperty<float>("Zoom");
+                prop.Value = Math.Max(prop.Value - (0.1f * Speed * elapsedTime), GlobalProperties.Instance.GetProperty<float>("MaxZoom").Value);
             }
             if (m_InputObj.IsDown(Keys.PageDown) && Entity.HasProperty<float>("Zoom"))
             {
-                if (Entity.GetProperty<float>("Zoom").Value + .01f * Speed * elapsedTime >= GlobalProperties.Instance.GetProperty<float>("MinZoom").Value)
-                    Entity.GetProperty<float>("Zoom").Value = GlobalProperties.Instance.GetProperty<float>("MinZoom").Value;
-                else
-                    Entity.GetProperty<float>("Zoom").Value += .01f * Speed * elapsedTime;
+                Property<float> prop = Entity.GetProperty<float>("Zoom");
+                prop.Value = Math.Min(prop.Value + (0.1f * Speed * elapsedTime), GlobalProperties.Instance.GetProperty<float>("MinZoom").Value);
             }
             if (m_InputObj.IsDown(Keys.R))
                 m_Position.Value = new Vector3(-500, -500, m_Position.Value.Z);
@@ -119,7 +115,7 @@ namespace Kannon.Components
         const float zoomDuration = 450f;
         const float edgeScrollThreshold = 100f;
 
-        float[] zoomLevels = { 1f, 1.5f, 2f, 3f, 4f, 6f, 8f, 12f, 16f, 24f, 32f, 48f, 64f, 96f, 128f, 192f, 256f };
+        float[] zoomLevels;
 
         public Boolean IsActive
         {
@@ -148,8 +144,11 @@ namespace Kannon.Components
         {
             m_InputObj = XNAGame.Instance.GetBroadphase<Broadphases.Input>("Input");
 
-            minZoom = GlobalProperties.Instance.GetProperty<float>("MinZoom").Value;
-            maxZoom = GlobalProperties.Instance.GetProperty<float>("MaxZoom").Value;
+            minZoom = GlobalProperties.Instance.GetProperty<float[]>("ZoomLevels").Value[0];
+            int zoomcount = GlobalProperties.Instance.GetProperty<float[]>("ZoomLevels").Value.GetLength(0);
+            maxZoom = GlobalProperties.Instance.GetProperty<float[]>("ZoomLevels").Value[zoomcount - 1];
+
+            zoomLevels = GlobalProperties.Instance.GetProperty<float[]>("ZoomLevels").Value;
 
             m_Position = Entity.AddProperty<Vector3>("Position", Vector3.Zero);
             m_Zoom = Entity.AddProperty<float>("Zoom", (maxZoom + minZoom) / 2);

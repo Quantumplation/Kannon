@@ -1,4 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+
+
 <Project>
   <Set name="TestSetA">
     
@@ -31,7 +33,7 @@
         <Vector3>
           <X>0</X>
           <Y>50</Y>
-          <Z>-2</Z>
+          <Z>0</Z>
         </Vector3>
       </Property>
     </Entity>
@@ -98,7 +100,7 @@
   </Entity>
 
   <Entity name="Cursor">
-    <Component type="StaticRenderable" name="cursorGraphic" pass="UI"/>
+    <Component type="StaticRenderable" file="sphere" pass="UI"/>
     <Component type="Cursor" name="cursorComponent"/>
     <Component type="SelectionBox" name="selectionBox"/>
     <Property name="Scale" type="System.Single">
@@ -128,9 +130,10 @@
         <Z>0</Z>
       </Vector3>
     </Property>
-    <Component type="StaticRenderable" name="ComponentA" file="ERROR" pass="Unsorted"/>
+    <Component type="StaticRenderable" name="ComponentA" file="sphere" pass="Unsorted"/>
     <Component type="Selectable" name="Selectable" pass="Unsorted"/>
   </Entity>
+  
   <Entity name="EntityD">
     <Property name ="Position" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
       <Vector3>
@@ -142,8 +145,9 @@
     <Property name="Rotation" type="System.Single">
       <float>1</float>
     </Property>
-    <Component type="StaticRenderable" name="ComponentA"/>
+    <Component type="StaticRenderable" name="ComponentA" file="sphere"/>
     <Component type="Selectable" name="Selectable" pass="Unsorted"/>
+    <Component type="Follower"/>
   </Entity>
   
   <Entity name="EntityE">
@@ -157,7 +161,7 @@
     <Property name="Rotation" type="System.Single">
       <float>0</float>
     </Property>
-    <Component type="StaticRenderable" name="ComponentA"/>
+    <Component type="StaticRenderable" name="ComponentA" file="sphere"/>
     <Component type="Selectable" name="Selectable" pass="Unsorted"/>
   </Entity>
 </Project>

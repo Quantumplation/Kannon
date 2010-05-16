@@ -109,8 +109,8 @@ namespace Kannon
         protected override void Initialize()
         {
             GlobalProperties.Instance.AddProperty<Vector2>("ScreenDimensions", new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height));
-            GlobalProperties.Instance.AddProperty<float>("MaxZoom", 1.01f);
-            GlobalProperties.Instance.AddProperty<float>("MinZoom", 256.0f);
+            GlobalProperties.Instance.AddProperty<float[]>("ZoomLevels", new float[] { 1f, 1.5f, 2f, 3f, 4f, 6f, 8f, 12f, 16f, 24f, 32f, 48f, 64f, 96f, 128f, 192f, 256f });
+            GlobalProperties.Instance.AddProperty<float>("ZoomStart", 24f);
 
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.StaticRenderable));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Sound));
@@ -120,6 +120,7 @@ namespace Kannon
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Cursor));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.SelectionBox));
             ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Selectable));
+            ComponentFactory.RegisterComponentType(typeof(Kannon.Components.Follower));
 
             m_Broadphases = new Dictionary<string, IBroadphase>();
             m_Broadphases.Add("Generic", new Broadphases.Generic());
