@@ -18,6 +18,8 @@ namespace Kannon.Components
     {
         Property<Vector3> m_Position;
 
+        bool transform = false;
+
         [ComponentCreator]
         public static Component Create(Entity ent, String name)
         {
@@ -33,11 +35,16 @@ namespace Kannon.Components
 
         void inp_MouseMoved(Broadphases.Input.MouseData data)
         {
-            m_Position.Value = new Vector3(data.mouseX, data.mouseY, 0.0f);
+            if( !transform )
+                m_Position.Value = new Vector3(data.mouseX, data.mouseY, 0.0f);
+            if (transform)
+                m_Position.Value = Camera.ScreenToWorld(new Vector2(data.mouseX, data.mouseY) , 0.0f);
         }
 
         public override void Parse(System.Xml.XmlNode data)
         {
+            if (data.Attributes["transform"] != null)
+                transform = bool.Parse(data.Attributes["transform"].Value);
         }
     }
 }

@@ -9,6 +9,21 @@ namespace Kannon
     public interface ITransformer
     {
         Matrix GetTransformation();
+
+        Matrix View
+        {
+            get;
+        }
+
+        Matrix Projection
+        {
+            get;
+        }
+
+        Vector3 Position
+        {
+            get;
+        }
     }
 
     /// <summary>
@@ -31,6 +46,21 @@ namespace Kannon
         public Matrix GetTransformation()
         {
             return Matrix.Identity;
+        }
+
+        public Matrix View
+        {
+            get { return Matrix.Identity; }
+        }
+
+        public Matrix Projection
+        {
+            get { return Matrix.Identity; }
+        }
+
+        public Vector3 Position
+        {
+            get { return Vector3.Zero; }
         }
     }
 }

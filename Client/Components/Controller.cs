@@ -242,7 +242,7 @@ namespace Kannon.Components
                     m_Zoom.Value = interpolate(timerCounter, startZoom, zoomLevels[zoomDestinationIndex], zoomDuration);
                 }
             }
-
+            
             if (m_InputObj.MousePosition.X < edgeScrollThreshold)
                 m_Position.Value -= Vector3.UnitX * EdgeScrollSpeed * m_Zoom.Value * (elapsedTime / 1000);
             if (m_InputObj.MousePosition.Y < edgeScrollThreshold)
@@ -251,6 +251,7 @@ namespace Kannon.Components
                 m_Position.Value += Vector3.UnitX * EdgeScrollSpeed * m_Zoom.Value * (elapsedTime / 1000);
             if (m_InputObj.MousePosition.Y > m_ScreenDimensions.Y - edgeScrollThreshold)
                 m_Position.Value += Vector3.UnitY * EdgeScrollSpeed * m_Zoom.Value * (elapsedTime / 1000);
+            
             #endregion
 
             /*
@@ -262,6 +263,7 @@ namespace Kannon.Components
              *      return start + end*(-3.8*time_cubed*time_squared + 9.5*time_squared*time_squared + -9.6*time_cubed + 4.9*time_squared);
              * }
              */
+            
         }
 
 

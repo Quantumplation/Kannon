@@ -15,6 +15,7 @@ namespace Kannon.Components
         /// </summary>
         Matrix m_View;
         Matrix m_Proj;
+        Matrix m_ScreenAdjust;
 
         /// <summary>
         /// Properties from the entity or elsewhere.
@@ -55,7 +56,8 @@ namespace Kannon.Components
 
             RecalculateView(m_Position.Value);
 
-            m_Proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(40.0f), 1, 1.0f, 1000.0f) * Matrix.CreateTranslation(new Vector3(m_ScreenDimensions.Value.X/2, m_ScreenDimensions.Value.Y/2, 0.0f));
+            m_Proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(40.0f), 1, m_ScreenDimensions.Value.X / m_ScreenDimensions.Value.Y, 1000.0f);
+            m_ScreenAdjust = Matrix.CreateTranslation(new Vector3(m_ScreenDimensions.Value.X / 2, m_ScreenDimensions.Value.Y / 2, 0.0f));
 
             // Whenever the entities "SetActive" event is triggered, make this camera active.
             Entity.AddEvent("SetActive", (o) => SetActiveCamera());
@@ -128,7 +130,31 @@ namespace Kannon.Components
         /// <returns></returns>
         public Matrix GetTransformation()
         {
-            return m_View * m_Proj;
+            return m_View * (m_Proj * m_ScreenAdjust);
+        }
+
+        public Matrix View
+        {
+            get
+            {
+                return m_View;
+            }
+        }
+
+        public Matrix Projection
+        {
+            get
+            {
+                return m_Proj;
+            }
+        }
+
+        public Vector3 Position
+        {
+            get
+            {
+                return m_Position.Value;
+            }
         }
 
         /// <summary>
@@ -140,7 +166,27 @@ namespace Kannon.Components
         /// <returns></returns>
         public static Vector3 ScreenToWorld(Vector2 screenPos, float depth, String PassID = "Unsorted")
         {
-            return new Vector3(screenPos, depth);
+            // Grab the viewport and transformer.  Used the built in viewport unprojection to get the
+            // coordinates.
+            Microsoft.Xna.Framework.Graphics.Viewport vp = XNAGame.Instance.GraphicsDevice.Viewport;
+            ITransformer trans = XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics").GetTransformer(PassID);
+            Vector3 near = vp.Unproject(new Vector3(screenPos, 0), trans.Projection, trans.View, Matrix.Identity);
+            Vector3 far = vp.Unproject(new Vector3(screenPos, 1), trans.Projection, trans.View, Matrix.Identity);
+
+            // find the direction vector that goes from the nearPoint to the farPoint
+            // and psuedo-normalize it....
+            Vector3 direction = (far - near);
+            // This scales things so that we're dealing with something on the "one unit away from
+            // the camera" plane.
+            direction /= Math.Abs(direction.Z);
+            // Scale it by halfe the viewport width, half the negative viewport height.
+            // This is done... I'm not really sure why, but it works.  The negative is to
+            // flip the y axis.  Have i mentioned I hate varying coordinate spaces?
+            direction.X *= vp.Width/2;
+            direction.Y *= -vp.Height/2;
+            // Now, take the camera position, and "go out" from there to the specified depth.
+            Vector3 result = trans.Position + (direction * (trans.Position.Z - depth));
+            return result;
         }
 
         /// <summary>
@@ -151,7 +197,7 @@ namespace Kannon.Components
         /// <returns></returns>
         public static Matrix ScreenToWorldMatrix(String PassID = "Unsorted")
         {
-            return Matrix.Identity;
+            return Matrix.Invert(WorldToScreenMatrix(PassID));
         }
 
         /// <summary>
@@ -161,7 +207,7 @@ namespace Kannon.Components
         /// <returns></returns>
         public static Vector2 WorldToScreen(Vector3 worldPos, string PassID = "Unsorted")
         {
-            return worldPos.XY();
+            return Vector3.Transform(worldPos, WorldToScreenMatrix(PassID)).XY();
         }
 
         /// <summary>
@@ -170,7 +216,8 @@ namespace Kannon.Components
         /// <returns></returns>
         public static Matrix WorldToScreenMatrix(string PassID = "Unsorted")
         {
-            return Matrix.Identity;
+            ITransformer trans = XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics").GetTransformer(PassID);
+            return trans.GetTransformation();
         }
     }
 }
