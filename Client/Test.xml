@@ -96,7 +96,7 @@
   
   <Entity name="Camera">
     <Component type="Camera" name="Camera" pass="Unsorted"/>
-    <Component type="StandardCameraController" name="Keyboard" Keyboard="10000" EdgeScroll="200.0"/>
+    <Component type="StandardCameraController" name="Keyboard" Keyboard="0.7" EdgeScroll="200.0"/>
   </Entity>
 
   <Entity name="Cursor">

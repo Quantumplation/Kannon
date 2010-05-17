@@ -113,7 +113,7 @@ namespace Kannon.Components
 
         const int zoomPoints = 17;
         const float zoomDuration = 450f;
-        const float edgeScrollThreshold = 100f;
+        const float edgeScrollThreshold = 40f;
 
         float[] zoomLevels;
 
@@ -269,7 +269,7 @@ namespace Kannon.Components
             m_Position.Value += camera_delta;
             
 //                m_Position.Value = (frame_endZoom / frame_startZoom) * (m_Position.Value - Camera.ScreenToWorld(m_InputObj.MousePosition, 0.0f));
-            /*
+            
             if (m_InputObj.MousePosition.X < edgeScrollThreshold)
                 m_Position.Value -= Vector3.UnitX * EdgeScrollSpeed * m_Zoom.Value * (elapsedTime / 1000);
             if (m_InputObj.MousePosition.Y < edgeScrollThreshold)
@@ -278,7 +278,7 @@ namespace Kannon.Components
                 m_Position.Value += Vector3.UnitX * EdgeScrollSpeed * m_Zoom.Value * (elapsedTime / 1000);
             if (m_InputObj.MousePosition.Y > m_ScreenDimensions.Y - edgeScrollThreshold)
                 m_Position.Value += Vector3.UnitY * EdgeScrollSpeed * m_Zoom.Value * (elapsedTime / 1000);
-            */
+            
             #endregion
 
             /*
