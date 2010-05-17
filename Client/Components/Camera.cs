@@ -130,7 +130,7 @@ namespace Kannon.Components
         /// <returns></returns>
         public Matrix GetTransformation()
         {
-            return m_View * (m_Proj * m_ScreenAdjust);
+            return m_View * m_Proj * m_ScreenAdjust;
         }
 
         public Matrix View
@@ -170,24 +170,21 @@ namespace Kannon.Components
             // coordinates.
             Microsoft.Xna.Framework.Graphics.Viewport vp = XNAGame.Instance.GraphicsDevice.Viewport;
             ITransformer trans = XNAGame.Instance.GetBroadphase<Broadphases.Graphics>("Graphics").GetTransformer(PassID);
-            Vector3 near = vp.Unproject(new Vector3(screenPos, 0), trans.Projection, trans.View, Matrix.Identity);
-            Vector3 far = vp.Unproject(new Vector3(screenPos, 1), trans.Projection, trans.View, Matrix.Identity);
-            
-            // find the direction vector that goes from the nearPoint to the farPoint
-            // and psuedo-normalize it....
-            Vector3 direction = (far - near);
-            // This scales things so that we're dealing with something on the "one unit away from
-            // the camera" plane.
-            direction /= Math.Abs(direction.Z);
-            // Scale it by halfe the viewport width, half the negative viewport height.
-            // This is done... I'm not really sure why, but it works.  The negative is to
-            // flip the y axis.  Have i mentioned I hate varying coordinate spaces?
-            direction.X *= vp.Width/2;
-            direction.Y *= -vp.Height/2;
-            // Now, take the camera position, and "go out" from there to the specified depth.
-            Vector3 result = trans.Position + (direction * (trans.Position.Z - depth));
-            // Sometimes we get small floating point errors, so just go ahead and set the depth equal to what was passed in.
-            result.Z = depth;
+
+            // This finds the point on the near plane.
+            Vector3 v;
+            v.X = (((2.0f * screenPos.X) / vp.Width) - 1) * (float)Math.Tan(MathHelper.ToRadians(20.0f));
+            v.Y = -(((2.0f * screenPos.Y) / vp.Height) - 1) * (float)Math.Tan(MathHelper.ToRadians(20.0f));
+            v.Z = -1.0f;
+
+            // And it scales perfectly up to the point in space.
+            // This position is relative to the camera XY on the plane requested, so we
+            // need to add the camera position to that offset.
+            // NOTE: THIS ONLY WORKS BECAUSE WE'RE 100% TOP DOWN.
+            v *= trans.Position.Z - depth;
+            v.X *= vp.Width / 2;
+            v.Y *= -vp.Height / 2;
+            Vector3 result = trans.Position + v;
             return result;
         }
 

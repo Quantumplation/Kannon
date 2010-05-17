@@ -153,6 +153,21 @@ namespace Kannon.Components
             m_Position = Entity.AddProperty<Vector3>("Position", Vector3.Zero);
             m_Zoom = Entity.AddProperty<float>("Zoom", (maxZoom + minZoom) / 2);
 
+            float minDist = float.MaxValue;
+            int minDistIndex = 0;
+            int index = 0;
+            foreach (float z in zoomLevels)
+            {
+                float dist = Math.Abs(m_Zoom.Value - z);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    minDistIndex = index;
+                }
+                index++;
+            }
+            zoomDestinationIndex = minDistIndex;
+
             m_ScreenDimensions = GlobalProperties.Instance.GetProperty<Vector2>("ScreenDimensions").Value;
 
             Entity.AddEvent("SetActive", (o) => this.IsActive = true);
@@ -227,6 +242,10 @@ namespace Kannon.Components
                 }
             }
 
+            // Begin zoom, capture the anchor point.
+            Vector3 anchor_before = Camera.ScreenToWorld(m_InputObj.MousePosition, 0);
+
+            
             if (zooming)
             {
                 timerCounter += elapsedTime;
@@ -241,7 +260,16 @@ namespace Kannon.Components
                     m_Zoom.Value = interpolate(timerCounter, startZoom, zoomLevels[zoomDestinationIndex], zoomDuration);
                 }
             }
+
+            // Finished zooming this frame, capture the NEW anchor point.
+            Vector3 anchor_after = Camera.ScreenToWorld(m_InputObj.MousePosition, 0);
+
+            // Now, get the vector FROM new TO old, and adjust the camera position by that vector.
+            Vector3 camera_delta = anchor_before - anchor_after;
+            m_Position.Value += camera_delta;
             
+//                m_Position.Value = (frame_endZoom / frame_startZoom) * (m_Position.Value - Camera.ScreenToWorld(m_InputObj.MousePosition, 0.0f));
+            /*
             if (m_InputObj.MousePosition.X < edgeScrollThreshold)
                 m_Position.Value -= Vector3.UnitX * EdgeScrollSpeed * m_Zoom.Value * (elapsedTime / 1000);
             if (m_InputObj.MousePosition.Y < edgeScrollThreshold)
@@ -250,7 +278,7 @@ namespace Kannon.Components
                 m_Position.Value += Vector3.UnitX * EdgeScrollSpeed * m_Zoom.Value * (elapsedTime / 1000);
             if (m_InputObj.MousePosition.Y > m_ScreenDimensions.Y - edgeScrollThreshold)
                 m_Position.Value += Vector3.UnitY * EdgeScrollSpeed * m_Zoom.Value * (elapsedTime / 1000);
-            
+            */
             #endregion
 
             /*
@@ -268,10 +296,13 @@ namespace Kannon.Components
 
         float interpolate(float time, float start, float end, float duration)
         {
-            float normalized_time = time / duration;
-            float time_squared = normalized_time * normalized_time;
-            float time_cubed = time_squared * normalized_time;
-            return start + (end-start) * (-3.8f * time_cubed * time_squared + 9.5f * time_squared * time_squared + -9.6f * time_cubed + 4.9f * time_squared);
+            
+            //float normalized_time = time / duration;
+            //float time_squared = normalized_time * normalized_time;
+            //float time_cubed = time_squared * normalized_time;
+            //return start + (end-start) * (-3.8f * time_cubed * time_squared + 9.5f * time_squared * time_squared + -9.6f * time_cubed + 4.9f * time_squared);
+             
+            return MathHelper.SmoothStep(start, end, time / duration);
         }    
     }
 }
