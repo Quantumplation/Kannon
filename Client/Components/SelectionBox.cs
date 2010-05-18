@@ -10,6 +10,14 @@ using Kannon.EntitySystem.Components;
 
 namespace Kannon.Components
 {
+    public static class RectangleExtensions
+    {
+        public static Rectangle FixCorners(this Rectangle box)
+        {
+            return new Rectangle(Math.Min(box.X, box.X + box.Width), Math.Min(box.Y, box.Y + box.Height), Math.Abs(box.Width), Math.Abs(box.Height));
+        }
+    }
+
     /// <summary>
     /// When attached to an entity, uses the entities position
     /// while the mouse button is held to create a selection box.
@@ -92,7 +100,7 @@ namespace Kannon.Components
         {
             if (Selecting)
             {
-                sb.Draw(m_Image, Box, new Color(new Vector4(Color.DarkGreen.ToVector3(), 150)));
+                sb.Draw(m_Image, Box.FixCorners(), new Color(new Vector4(Color.DarkGreen.ToVector3(), 150)));
             }
         }
 

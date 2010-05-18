@@ -244,7 +244,7 @@ namespace Kannon.Components
 
             // Begin zoom, capture the anchor point.
             Vector3 anchor_before = Camera.ScreenToWorld(m_InputObj.MousePosition, 0);
-
+            float zoomBefore = m_Zoom.Value;
             
             if (zooming)
             {
@@ -263,10 +263,12 @@ namespace Kannon.Components
 
             // Finished zooming this frame, capture the NEW anchor point.
             Vector3 anchor_after = Camera.ScreenToWorld(m_InputObj.MousePosition, 0);
+            float zoomAfter = m_Zoom.Value;
 
             // Now, get the vector FROM new TO old, and adjust the camera position by that vector.
             Vector3 camera_delta = anchor_before - anchor_after;
-            m_Position.Value += camera_delta;
+            if( zoomAfter < zoomBefore )
+                m_Position.Value += camera_delta;
             
 //                m_Position.Value = (frame_endZoom / frame_startZoom) * (m_Position.Value - Camera.ScreenToWorld(m_InputObj.MousePosition, 0.0f));
             

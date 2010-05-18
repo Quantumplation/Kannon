@@ -98,7 +98,7 @@ namespace Kannon.Broadphases
 
         public void Do(float elapsedTime)
         {
-            /*if (m_SelectionBox != null && m_SelectionBox.Selecting)
+            if (m_SelectionBox != null && m_SelectionBox.Selecting)
             {
                 foreach (Int32 key in m_Components.Keys)
                 {
@@ -122,7 +122,7 @@ namespace Kannon.Broadphases
                         }
                     }
                 }
-            }*/
+            }
         }
 
         public float ExecutionFrequency

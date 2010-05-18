@@ -91,10 +91,11 @@ namespace Kannon.Components
 
         public bool Intersects(Rectangle rect)
         {
+            Rectangle fixedR = rect.FixCorners();
             // Transform the given rect into world coordinates on this guys layer
-            Vector3 tl = Camera.ScreenToWorld(new Vector2(rect.X, rect.Y), m_Position.Value.Z, m_Pass);
-            Vector3 br = Camera.ScreenToWorld(new Vector2(rect.X + rect.Width, rect.Y + rect.Height), m_Position.Value.Z, m_Pass);
-            Rectangle newRect = new Rectangle((int)Math.Min(tl.X, br.X), (int)Math.Min(tl.Y, br.Y), (int)Math.Max(Math.Abs(br.X - tl.X), 1), (int)Math.Max(Math.Abs(br.Y - tl.Y), 1));
+            Vector3 tl = Camera.ScreenToWorld(new Vector2(fixedR.X, fixedR.Y), m_Position.Value.Z, m_Pass);
+            Vector3 br = Camera.ScreenToWorld(new Vector2(fixedR.X + fixedR.Width, fixedR.Y + fixedR.Height), m_Position.Value.Z, m_Pass);
+            Rectangle newRect = new Rectangle((int)tl.X, (int)tl.Y, (int)(br.X - tl.X), (int)(br.Y - tl.Y));
             bool inter = newRect.Intersects(transformedBoundary);
             if (inter)
                 return true;

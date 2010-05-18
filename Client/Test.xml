@@ -146,7 +146,6 @@
       <float>1</float>
     </Property>
     <Component type="StaticRenderable" name="ComponentA" file="sphere"/>
-    <Component type="Selectable" name="Selectable" pass="Unsorted"/>
     <Component type="Follower"/>
   </Entity>
   
