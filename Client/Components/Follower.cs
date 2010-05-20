@@ -45,10 +45,10 @@ namespace Kannon.Components
             if (active)
             {
                 Microsoft.Xna.Framework.Vector2 screenPos = XNAGame.Instance.GetBroadphase<Broadphases.Input>("Input").MousePosition;
-                m_Position.Value = (Camera.ScreenToWorld(screenPos, m_Position.Value.Z));
+                m_Position.Value += (Camera.ScreenToWorld(screenPos, m_Position.Value.Z) - m_Position.Value) / 10;
             }
-            else
-                m_Position.Value = Vector3.Zero;
+//            else
+//                m_Position.Value = Vector3.Zero;
         }
     }
 }
