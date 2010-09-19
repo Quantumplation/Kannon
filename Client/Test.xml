@@ -15,6 +15,8 @@
     <Entity base="Cursor"/>
     <Entity base="OtherCursor"/>
 
+    <Entity base="ClickSound"/>
+    
     <Entity base="EntityC">
     </Entity>
 
@@ -162,5 +164,21 @@
     </Property>
     <Component type="StaticRenderable" name="ComponentA" file="sphere"/>
     <Component type="Selectable" name="Selectable" pass="Unsorted"/>
+  </Entity>
+
+  <Entity name="ClickSound">
+    <Property name ="Position" type="Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d">
+      <Vector3>
+        <X>500</X>
+        <Y>500</Y>
+        <Z>0</Z>
+      </Vector3>
+    </Property>
+    <Component type="StaticRenderable" name="Graphic" file="sphere"/>
+    <Component type="Sound">
+      <Clicked file="gotcha">
+        <Action action="play" event="play"/>
+      </Clicked>
+    </Component>
   </Entity>
 </Project>

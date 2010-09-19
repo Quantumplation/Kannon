@@ -15,7 +15,7 @@ namespace Kannon.Broadphases
     /// </summary>
     class Selection : IBroadphase
     {
-        SortedList<Int32, List<Selectable>> m_Components;
+        List<Selectable> m_Components;
         List<Selectable> m_Selected;
 
         SelectionBox m_SelectionBox;
@@ -24,7 +24,7 @@ namespace Kannon.Broadphases
 
         public Selection()
         {
-            m_Components = new SortedList<Int32, List<Selectable>>();
+            m_Components = new List<Selectable>();
             m_Selected = new List<Selectable>();
 
             m_InputObj = XNAGame.Instance.GetBroadphase<Input>("Input");
@@ -47,20 +47,24 @@ namespace Kannon.Broadphases
                 m_Selected.Clear();
 
                 Rectangle r = new Rectangle((int)data.mouseX, (int)data.mouseY, 1, 1);
-                foreach (Int32 key in m_Components.Keys)
+                float depth = -100;
+                Selectable selection = null;
+                foreach (Selectable sel in m_Components)
                 {
-                    foreach (Selectable sel in m_Components[key])
+                    if (sel.Intersects(r))
                     {
-                        if (sel.Intersects(r))
+                        bool has = sel.Entity.HasProperty<Vector3>("Position");
+                        if ( !has || (has && sel.Entity.GetProperty<Vector3>("Position").Value.Z > depth))
                         {
-                            if (!m_Selected.Contains(sel))
-                            {
-                                sel.Entity.InvokeEvent("Select", null);
-                                m_Selected.Add(sel);
-                                return;
-                            }
+                            depth = sel.Entity.GetProperty<Vector3>("Position").Value.Z;
+                            selection = sel;
                         }
                     }
+                }
+                if (selection != null)
+                {
+                    selection.Entity.InvokeEvent("Select", null);
+                    m_Selected.Add(selection);
                 }
             }
         }
@@ -69,10 +73,7 @@ namespace Kannon.Broadphases
         {
             if (c is Selectable)
             {
-                int key = c.Entity.AddProperty<Int32>("Layer", 1).Value;
-                if (!m_Components.ContainsKey(key))
-                    m_Components.Add(key, new List<Selectable>());
-                m_Components[key].Add(c as Selectable);
+                m_Components.Add(c as Selectable);
             }
             else if (c is SelectionBox)
                 m_SelectionBox = c as SelectionBox;
@@ -82,14 +83,10 @@ namespace Kannon.Broadphases
         {
             if (c.Entity.HasProperty<Int32>("Layer"))
             {
-                int key = c.Entity.AddProperty<Int32>("Layer", 1).Value;
-                if (m_Components.ContainsKey(key))
-                    if (m_Components[key].Contains(c as Selectable))
-                    {
-                        m_Components[key].Remove(c as Selectable);
-                        if (m_Components[key].Count <= 0)
-                            m_Components.Remove(key);
-                    }
+                if (m_Components.Contains(c as Selectable))
+                {
+                    m_Components.Remove(c as Selectable);
+                }
             }
             if (c == m_SelectionBox)
                 m_SelectionBox = null;
@@ -100,25 +97,22 @@ namespace Kannon.Broadphases
         {
             if (m_SelectionBox != null && m_SelectionBox.Selecting)
             {
-                foreach (Int32 key in m_Components.Keys)
+                foreach (Selectable sel in m_Components)
                 {
-                    foreach (Selectable sel in m_Components[key])
+                    if (sel.Intersects(m_SelectionBox.Box))
                     {
-                        if (sel.Intersects(m_SelectionBox.Box))
+                        if (!m_Selected.Contains(sel))
                         {
-                            if (!m_Selected.Contains(sel))
-                            {
-                                sel.Entity.InvokeEvent("Select", null);
-                                m_Selected.Add(sel);
-                            }
+                            sel.Entity.InvokeEvent("Select", null);
+                            m_Selected.Add(sel);
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (m_Selected.Contains(sel))
                         {
-                            if (m_Selected.Contains(sel))
-                            {
-                                sel.Entity.InvokeEvent("Deselect", null);
-                                m_Selected.Remove(sel);
-                            }
+                            sel.Entity.InvokeEvent("Deselect", null);
+                            m_Selected.Remove(sel);
                         }
                     }
                 }
